@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  level = level1;
   // prettier-ignore
   enemies = level1.enemies;
   clouds = level1.clouds;
@@ -26,11 +27,11 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.backgroundObjects);
+    this.addObjectsToMap(this.level.backgroundObjects);
 
     this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
-    this.addObjectsToMap(this.clouds);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.clouds);
 
     this.ctx.translate(-this.camera_x, 0);
 
