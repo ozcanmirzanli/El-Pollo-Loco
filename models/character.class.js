@@ -26,15 +26,19 @@ class Character extends MovableObject {
   ];
 
   world;
+  background_music = new Audio("audio/music.mp3");
   walking_sound = new Audio("audio/running.mp3");
   jumping_sound = new Audio("audio/jumping.mp3");
 
   constructor() {
     super();
+    this.background_music.volume = 0.1;
+    this.background_music.play();
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.applyGravity();
+
     this.animate();
   }
 
