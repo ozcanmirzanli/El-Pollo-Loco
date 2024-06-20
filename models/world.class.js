@@ -9,6 +9,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  background_music = new Audio("audio/music.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -16,6 +17,8 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    this.background_music.volume = 0.1;
+    this.background_music.play();
   }
 
   setWorld() {
@@ -50,15 +53,27 @@ class World {
 
   addToMap(mo) {
     if (mo.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(mo.width, 0);
-      this.ctx.scale(-1, 1);
-      mo.x = mo.x * -1;
+      this.flipImage(mo);
     }
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+
+    mo.draw(this.ctx);
+
+    mo.drawFrame(this.ctx);
+
     if (mo.otherDirection) {
-      mo.x = mo.x * -1;
-      this.ctx.restore();
+      this.flipImageBack(mo);
     }
+  }
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 }
