@@ -10,29 +10,29 @@ function init() {
 }
 
 window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") {
-    keyboard.UP = true;
-  } else if (e.key === "ArrowDown") {
+  if (e.code === "Space") {
+    keyboard.SPACE = true;
+  } else if (e.code === "ArrowDown") {
     keyboard.DOWN = true;
-  } else if (e.key === "ArrowLeft") {
+  } else if (e.code === "ArrowLeft") {
     keyboard.LEFT = true;
-  } else if (e.key === "ArrowRight") {
+  } else if (e.code === "ArrowRight") {
     keyboard.RIGHT = true;
-  } else {
-    keyboard.UP = true;
+  } else if (e.code === "KeyD") {
+    keyboard.D = true;
   }
 });
 
 window.addEventListener("keyup", (e) => {
-  if (e.key === "ArrowUp") {
-    keyboard.UP = false;
-  } else if (e.key === "ArrowDown") {
+  if (e.code === "Space") {
+    keyboard.SPACE = false;
+  } else if (e.code === "ArrowDown") {
     keyboard.DOWN = false;
-  } else if (e.key === "ArrowLeft") {
+  } else if (e.code === "ArrowLeft") {
     keyboard.LEFT = false;
-  } else if (e.key === "ArrowRight") {
+  } else if (e.code === "ArrowRight") {
     keyboard.RIGHT = false;
-  } else {
-    keyboard.UP = false;
+  } else if (e.code === "KeyD") {
+    keyboard.D = false;
   }
 });
