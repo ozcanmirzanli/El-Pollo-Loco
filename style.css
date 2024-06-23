@@ -18,7 +18,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(7px);
   font-family: "zabras", Arial, Helvetica, sans-serif;
   overflow: hidden;
 }
@@ -26,6 +26,8 @@ body {
 canvas {
   background-color: black;
   margin-bottom: 100px;
+  border-radius: 15px;
+  display: block;
 }
 
 h1 {
@@ -33,4 +35,22 @@ h1 {
   margin-bottom: 50px;
   letter-spacing: 5px;
   text-shadow: 5px 1px 1px rgba(250, 92, 0, 0.596);
+}
+
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100vh;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    display: none;
+  }
 }
