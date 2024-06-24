@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject {
   acceleration = 2.5;
   energy = 100;
   lastHit = 0;
+  coins = 0;
 
   applyGravity() {
     setInterval(() => {
@@ -26,12 +27,12 @@ class MovableObject extends DrawableObject {
 
   // character.isColliding(chicken);
 
-  isColliding(mo) {
+  isColliding(obj) {
     return (
-      this.x < mo.x + mo.width &&
-      this.x + this.width > mo.x &&
-      this.y < mo.y + mo.height &&
-      this.y + this.height > mo.y
+      this.x + this.width >= obj.x &&
+      this.x <= obj.x + obj.width &&
+      this.y + this.height >= obj.y &&
+      this.y <= obj.y + obj.height
     );
   }
 

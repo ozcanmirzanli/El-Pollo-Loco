@@ -10,6 +10,8 @@ class World {
   camera_x = 0;
   keyboard;
   statusBar = new Statusbar();
+  coinsBar = new Coinsbar();
+
   throwableObjects = [];
   coins = level1.coins;
   background_music = new Audio("audio/music.mp3");
@@ -60,6 +62,9 @@ class World {
     this.level.coins = this.level.coins.filter((coin) => {
       if (this.character.isColliding(coin)) {
         console.log("Collecting coin", coin);
+        this.character.coins += 10;
+        this.coinsBar.setPercentage(this.character.coins);
+
         return false; // Remove coin from array
       }
       return true; // Keep coin in array
@@ -71,15 +76,16 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.clouds);
 
     this.ctx.translate(-this.camera_x, 0);
     // ----- Space for fixed objects -----
     this.addToMap(this.statusBar);
+    this.addToMap(this.coinsBar);
 
     this.ctx.translate(this.camera_x, 0);
 
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.clouds);
 
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
