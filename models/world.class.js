@@ -33,6 +33,7 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
+      this.collectCoins();
     }, 200);
   }
 
@@ -55,6 +56,16 @@ class World {
     });
   }
 
+  collectCoins() {
+    this.level.coins = this.level.coins.filter((coin) => {
+      if (this.character.isColliding(coin)) {
+        console.log("Collecting coin", coin);
+        return false; // Remove coin from array
+      }
+      return true; // Keep coin in array
+    });
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -68,9 +79,10 @@ class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.addToMap(this.character);
+    this.addObjectsToMap(this.level.clouds);
+
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0);
