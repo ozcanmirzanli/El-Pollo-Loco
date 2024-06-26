@@ -18,6 +18,7 @@ class World {
   background_music = new Audio("audio/music.mp3");
   coin_sound = new Audio("audio/coin.mp3");
   bottle_sound = new Audio("audio/bottle.mp3");
+  chicken_dead = new Audio("audio/chicken_dead.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -54,10 +55,14 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
+    this.level.enemies.forEach((enemy, index) => {
       if (this.character.isJumpedOn(enemy)) {
         enemy.jumpedOn = true; // Set the enemy to dead
+        this.chicken_dead.play();
         this.character.jump(5); // Make the character bounce back after hitting an enemy
+        setTimeout(() => {
+          this.level.enemies.splice(index, 1);
+        }, 1000);
       } else if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
