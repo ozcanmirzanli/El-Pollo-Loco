@@ -14,10 +14,10 @@ class Statusbar extends MovableObject {
     this.loadImages(this.IMAGES_HEALTH);
     this.setPercentage(100);
 
-    this.x = 20;
+    this.x = 10;
     this.y = 0;
     this.width = 230;
-    this.height = 65;
+    this.height = 60;
   }
 
   setPercentage(percentage) {

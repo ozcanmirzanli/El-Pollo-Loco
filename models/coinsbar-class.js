@@ -14,10 +14,10 @@ class Coinsbar extends MovableObject {
     this.loadImages(this.IMAGES_COINSBAR);
     this.setPercentage(0);
 
-    this.x = 20;
+    this.x = 10;
     this.y = 50;
     this.width = 230;
-    this.height = 65;
+    this.height = 60;
   }
 
   setPercentage(percentage) {

@@ -11,6 +11,7 @@ class World {
   keyboard;
   statusBar = new Statusbar();
   coinsBar = new Coinsbar();
+  bottleBar = new Bottlebar();
 
   throwableObjects = [];
   coins = level1.coins;
@@ -84,6 +85,7 @@ class World {
     // ----- Space for fixed objects -----
     this.addToMap(this.statusBar);
     this.addToMap(this.coinsBar);
+    this.addToMap(this.bottleBar);
 
     this.ctx.translate(this.camera_x, 0);
 
