@@ -15,9 +15,9 @@ class Bottlebar extends MovableObject {
     this.setPercentage(0);
 
     this.x = 10;
-    this.y = 100;
-    this.width = 230;
-    this.height = 60;
+    this.y = 80;
+    this.width = 200;
+    this.height = 50;
   }
 
   setPercentage(percentage) {

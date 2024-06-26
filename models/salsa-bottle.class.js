@@ -1,7 +1,7 @@
 class SalsaBottle extends MovableObject {
-  width = 80;
-  height = 80;
-  y = 350;
+  width = 60;
+  height = 60;
+  y = 360;
 
   IMAGES = ["img/6_salsa_bottle/1_salsa_bottle_on_ground.png"];
   constructor() {
