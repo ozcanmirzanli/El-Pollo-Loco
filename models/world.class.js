@@ -15,8 +15,9 @@ class World {
   throwableObjects = [];
   coins = level1.coins;
   salsaBottle = level1.salsaBottle;
-
   background_music = new Audio("audio/music.mp3");
+  coin_sound = new Audio("audio/coin.mp3");
+  bottle_sound = new Audio("audio/bottle.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -70,7 +71,11 @@ class World {
         console.log(`Collecting ${itemType}`, item);
         this.character[itemType] += increment;
         bar.setPercentage(this.character[itemType]);
-
+        if (itemType === "coins") {
+          this.coin_sound.play();
+        } else {
+          this.bottle_sound.play();
+        }
         return false; // Remove item from array
       }
       return true; // Keep item in array
