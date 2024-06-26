@@ -12,7 +12,6 @@ class World {
   statusBar = new Statusbar();
   coinsBar = new Coinsbar();
   bottleBar = new Bottlebar();
-
   throwableObjects = [];
   coins = level1.coins;
   salsaBottle = level1.salsaBottle;
@@ -38,7 +37,8 @@ class World {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
-      this.collectCoins();
+      this.collectItems("coins", 10, this.coinsBar);
+      this.collectItems("salsaBottle", 20, this.bottleBar);
     }, 200);
   }
 
@@ -61,16 +61,19 @@ class World {
     });
   }
 
-  collectCoins() {
-    this.level.coins = this.level.coins.filter((coin) => {
-      if (this.character.isColliding(coin)) {
-        console.log("Collecting coin", coin);
-        this.character.coins += 10;
-        this.coinsBar.setPercentage(this.character.coins);
+  collectItems(itemType, increment, bar) {
+    if (bar[itemType] >= 100) {
+      return;
+    }
+    this.level[itemType] = this.level[itemType].filter((item) => {
+      if (this.character.isColliding(item)) {
+        console.log(`Collecting ${itemType}`, item);
+        this.character[itemType] += increment;
+        bar.setPercentage(this.character[itemType]);
 
-        return false; // Remove coin from array
+        return false; // Remove item from array
       }
-      return true; // Keep coin in array
+      return true; // Keep item in array
     });
   }
 

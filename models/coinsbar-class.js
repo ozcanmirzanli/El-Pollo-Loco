@@ -7,7 +7,7 @@ class Coinsbar extends MovableObject {
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png",
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png",
   ];
-  percentage = 0;
+  coins = 0;
 
   constructor() {
     super();
@@ -20,22 +20,22 @@ class Coinsbar extends MovableObject {
     this.height = 50;
   }
 
-  setPercentage(percentage) {
-    this.percentage = percentage;
+  setPercentage(coins) {
+    this.coins = coins;
     let path = this.IMAGES_COINSBAR[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
   resolveImageIndex() {
-    if (this.percentage === 100) {
+    if (this.coins === 100) {
       return 5;
-    } else if (this.percentage > 80) {
+    } else if (this.coins > 80) {
       return 4;
-    } else if (this.percentage > 60) {
+    } else if (this.coins > 60) {
       return 3;
-    } else if (this.percentage > 40) {
+    } else if (this.coins > 40) {
       return 2;
-    } else if (this.percentage > 20) {
+    } else if (this.coins > 20) {
       return 1;
     } else {
       return 0;
