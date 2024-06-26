@@ -55,7 +55,10 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+      if (this.character.isJumpedOn(enemy)) {
+        enemy.jumpedOn = true; // Set the enemy to dead
+        this.character.jump(5); // Make the character bounce back after hitting an enemy
+      } else if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
       }

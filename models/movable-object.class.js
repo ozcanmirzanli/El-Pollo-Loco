@@ -28,14 +28,24 @@ class MovableObject extends DrawableObject {
 
   // character.isColliding(chicken);
   isColliding(obj) {
-    // Check for horizontal overlap
-    let horizontalOverlap =
-      this.x + this.width >= obj.x && this.x <= obj.x + obj.width;
-    // Check for vertical overlap
-    let verticalOverlap =
-      this.y + this.height >= obj.y && this.y <= obj.y + obj.height;
+    return (
+      this.x + this.width > obj.x &&
+      this.x < obj.x + obj.width &&
+      this.y + this.height > obj.y &&
+      this.y < obj.y + obj.height
+    );
+  }
 
-    return horizontalOverlap && verticalOverlap;
+  isHorizontallyOverlapping(obj) {
+    return this.x + this.width > obj.x && this.x < obj.x + obj.width;
+  }
+
+  isJumpedOn(obj) {
+    return (
+      this.isHorizontallyOverlapping(obj) &&
+      this.y + this.height <= obj.y + 10 && // Adjust to allow for a margin
+      this.y + this.height - this.speedY > obj.y
+    );
   }
 
   hit() {
@@ -72,7 +82,7 @@ class MovableObject extends DrawableObject {
     this.x -= this.speed;
   }
 
-  jump() {
-    this.speedY = 30;
+  jump(jumpHeight) {
+    this.speedY = jumpHeight;
   }
 }
