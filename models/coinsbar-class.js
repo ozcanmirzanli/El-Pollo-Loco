@@ -15,7 +15,7 @@ class Coinsbar extends MovableObject {
     this.setPercentage(0);
 
     this.x = 20;
-    this.y = 60;
+    this.y = 50;
     this.width = 230;
     this.height = 65;
   }

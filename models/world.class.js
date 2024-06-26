@@ -14,6 +14,8 @@ class World {
 
   throwableObjects = [];
   coins = level1.coins;
+  salsaBottle = level1.salsaBottle;
+
   background_music = new Audio("audio/music.mp3");
 
   constructor(canvas, keyboard) {
@@ -90,6 +92,7 @@ class World {
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.level.salsaBottle);
 
     this.ctx.translate(-this.camera_x, 0);
 

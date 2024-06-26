@@ -15,7 +15,6 @@ const level1 = new Level(
     new Chick(),
     new Endboss()
 ],
-
 [
     new Cloud()
 ],
@@ -55,5 +54,14 @@ const level1 = new Level(
     new Coins(400 + Math.random() * 1500, 100 + Math.random() * 10),
 
 ],
+[
+    new SalsaBottle(),
+    new SalsaBottle(),
+    new SalsaBottle(),
+    new SalsaBottle(),
+    new SalsaBottle(),
+    new SalsaBottle(),
+    new SalsaBottle()
+  ]
 
 );
