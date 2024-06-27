@@ -56,14 +56,17 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy, index) => {
-      if (this.character.isJumpedOn(enemy)) {
+      if (!enemy.jumpedOn && this.character.isJumpedOn(enemy)) {
         enemy.jumpedOn = true; // Set the enemy to dead
         this.chicken_dead.play();
         this.character.jump(5); // Make the character bounce back after hitting an enemy
         setTimeout(() => {
           this.level.enemies.splice(index, 1);
         }, 1000);
-      } else if (this.character.isColliding(enemy)) {
+      } else if (
+        this.character.isCollidingHorizontal(enemy) &&
+        !this.isJumpedOn()
+      ) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
       }
@@ -75,8 +78,7 @@ class World {
       return;
     }
     this.level[itemType] = this.level[itemType].filter((item) => {
-      if (this.character.isColliding(item)) {
-        console.log(`Collecting ${itemType}`, item);
+      if (this.character.isCollidingHorizontal(item)) {
         this.character[itemType] += increment;
         bar.setPercentage(this.character[itemType]);
         if (itemType === "coins") {
