@@ -56,16 +56,17 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy, index) => {
-      if (!enemy.jumpedOn && this.character.isJumpedOn(enemy)) {
-        enemy.jumpedOn = true; // Set the enemy to dead
+      if (this.character.isJumpedOn(enemy) && !enemy.jumpedOn) {
+        enemy.jumpedOn = true;
         this.chicken_dead.play();
-        this.character.jump(5); // Make the character bounce back after hitting an enemy
+        this.character.jump(10); // Make the character bounce back after hitting an enemy
         setTimeout(() => {
           this.level.enemies.splice(index, 1);
         }, 1000);
       } else if (
         this.character.isCollidingHorizontal(enemy) &&
-        !this.isJumpedOn()
+        !enemy.jumpedOn &&
+        !this.character.isJumpedOn(enemy) // Ensure we don't double count a collision
       ) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);

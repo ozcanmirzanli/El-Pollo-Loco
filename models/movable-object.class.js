@@ -27,16 +27,16 @@ class MovableObject extends DrawableObject {
   }
 
   // character.isColliding(chicken);
-
   isCollidingHorizontal(obj) {
     return this.x + this.width > obj.x && this.x < obj.x + obj.width;
   }
 
   isJumpedOn(obj) {
     return (
-      this.isCollidingHorizontal(obj) && // Check horizontal overlap
-      this.y + this.height >= obj.y && // The bottom of the character is above the top of the object
-      this.y + this.height + this.speedY > obj.y // The character was above the object in the previous frame
+      this.isCollidingHorizontal(obj) &&
+      this.speedY < 0 && // Ensure the character is moving downward
+      this.y + this.height >= obj.y && // The bottom of the character is at or below the top of the object
+      this.y + this.height + this.speedY < obj.y + obj.height // The character was above the object in the previous frame
     );
   }
 
