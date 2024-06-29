@@ -103,6 +103,7 @@ class Character extends MovableObject {
       } else if (this.isHurtByAnyEnemy()) {
         this.playAnimation(this.IMAGES_HURT);
         this.hurt_sound.play();
+        this.world.statusBar.setPercentage(this.energy);
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
@@ -115,8 +116,12 @@ class Character extends MovableObject {
   }
 
   isHurtByAnyEnemy() {
-    return this.world.level.enemies.some(
+    const hurtByEnemy = this.world.level.enemies.some(
       (enemy) => this.isColliding(enemy) && !enemy.isEnemyDead
     );
+    if (hurtByEnemy) {
+      this.hit();
+    }
+    return hurtByEnemy;
   }
 }

@@ -35,11 +35,10 @@ class World {
 
   run() {
     setInterval(() => {
-      this.checkCollisions();
       this.checkIsJumpedOn();
       this.collectItems("coins", 10, this.coinsBar);
       this.collectItems("salsaBottle", 20, this.bottleBar);
-    }, 50);
+    }, 15);
   }
 
   throwBottle() {
