@@ -30,6 +30,18 @@ canvas {
   display: block;
 }
 
+.start-screen {
+  position: absolute;
+  width: 720px;
+  height: 480px;
+  display: none;
+}
+
+.play-btn {
+  z-index: 2;
+  position: relative;
+}
+
 h1 {
   font-size: 75px;
   margin-bottom: 50px;

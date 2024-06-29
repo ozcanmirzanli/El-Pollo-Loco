@@ -1,12 +1,18 @@
 class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
-  speedY = 1;
-  acceleration = 2.5;
+  speedY = 0;
+  acceleration = 3;
   energy = 100;
   lastHit = 0;
   coins = 0;
   salsaBottle = 0;
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
 
   applyGravity() {
     setInterval(() => {
@@ -27,16 +33,25 @@ class MovableObject extends DrawableObject {
   }
 
   // character.isColliding(chicken);
-  isCollidingHorizontal(obj) {
-    return this.x + this.width > obj.x && this.x < obj.x + obj.width;
+  isColliding(mo) {
+    return (
+      this.x + this.width - this.offset.right >= mo.x + mo.offset.left && // R->L
+      this.y + this.height - this.offset.bottom >= mo.y + mo.offset.top && // T->B
+      this.x + this.offset.left <= mo.x + mo.height - mo.offset.right && // L->R
+      this.y + this.offset.top <= mo.y + mo.width - mo.offset.bottom // B->T
+    );
   }
 
-  isJumpedOn(obj) {
+  isCollidingHorizontal(mo) {
+    return this.x + this.width > mo.x && this.x < mo.x + mo.width;
+  }
+
+  isJumpedOn(mo) {
     return (
-      this.isCollidingHorizontal(obj) &&
-      this.speedY < 0 && // Ensure the character is moving downward
-      this.y + this.height >= obj.y && // The bottom of the character is at or below the top of the object
-      this.y + this.height + this.speedY < obj.y + obj.height // The character was above the object in the previous frame
+      this.isCollidingHorizontal(mo) &&
+      this.speedY <= 0 &&
+      this.y + this.height > mo.y && // The bottom of the character is at the top of the mo
+      this.y < mo.y + mo.height // The character was above the mo in the previous frame
     );
   }
 

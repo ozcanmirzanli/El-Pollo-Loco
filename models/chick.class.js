@@ -2,11 +2,23 @@ class Chick extends MovableObject {
   width = 25;
   height = 25;
   y = 395;
+  isEnemyDead = false;
+
+  offset = {
+    top: 20,
+    bottom: 20,
+    left: 20,
+    right: 20,
+  };
+
   IMAGES_WALKING = [
     "img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
     "img/3_enemies_chicken/chicken_small/1_walk/2_w.png",
     "img/3_enemies_chicken/chicken_small/1_walk/3_w.png",
   ];
+
+  IMAGE_DEAD = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
+
   walking_sound = new Audio("audio/chickens.mp3");
 
   constructor() {
@@ -22,11 +34,17 @@ class Chick extends MovableObject {
 
   animate() {
     setInterval(() => {
-      this.moveLeft();
+      if (!this.isEnemyDead) {
+        this.moveLeft();
+      }
     }, 1000 / 60);
 
     setInterval(() => {
-      this.playAnimation(this.IMAGES_WALKING);
+      if (this.isEnemyDead) {
+        this.loadImage(this.IMAGE_DEAD);
+      } else {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
     }, 100);
   }
 }

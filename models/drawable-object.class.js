@@ -34,7 +34,13 @@ class DrawableObject {
       ctx.beginPath();
       ctx.lineWidth = "5";
       ctx.strokeStyle = "blue";
-      ctx.rect(this.x + 20, this.y + 90, this.width - 40, this.height - 100);
+      ctx.rect(
+        this.x + this.offset.left,
+        this.y + this.offset.top,
+        this.width - this.offset.left - this.offset.right,
+        this.height - this.offset.bottom - this.offset.top
+      );
+
       ctx.stroke();
     } else if (this instanceof Coins) {
       ctx.beginPath();
@@ -45,8 +51,13 @@ class DrawableObject {
     } else if (this instanceof Chicken) {
       ctx.beginPath();
       ctx.lineWidth = "5";
-      ctx.strokeStyle = "red";
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.strokeStyle = "blue";
+      ctx.rect(
+        this.x + this.offset.left,
+        this.y + this.offset.top,
+        this.width - this.offset.left - this.offset.right,
+        this.height - this.offset.bottom - this.offset.top
+      );
       ctx.stroke();
     }
   }

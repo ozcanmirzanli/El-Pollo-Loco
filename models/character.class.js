@@ -2,8 +2,16 @@ class Character extends MovableObject {
   width = 120;
   height = 250;
   x = 50;
-  y = 0;
+  y = 20;
   speed = 5;
+
+  offset = {
+    top: 120,
+    bottom: 10,
+    left: 40,
+    right: 30,
+  };
+
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -92,7 +100,7 @@ class Character extends MovableObject {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.dead_sound.play();
-      } else if (this.isHurt() && !this.isJumpedOn()) {
+      } else if (this.isHurtByAnyEnemy()) {
         this.playAnimation(this.IMAGES_HURT);
         this.hurt_sound.play();
       } else if (this.isAboveGround()) {
@@ -104,5 +112,11 @@ class Character extends MovableObject {
         }
       }
     }, 50);
+  }
+
+  isHurtByAnyEnemy() {
+    return this.world.level.enemies.some(
+      (enemy) => this.isColliding(enemy) && !enemy.isEnemyDead
+    );
   }
 }

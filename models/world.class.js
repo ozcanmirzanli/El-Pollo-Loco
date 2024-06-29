@@ -15,7 +15,6 @@ class World {
   throwableObjects = [];
   coins = level1.coins;
   salsaBottle = level1.salsaBottle;
-  background_music = new Audio("audio/music.mp3");
   coin_sound = new Audio("audio/coin.mp3");
   bottle_sound = new Audio("audio/bottle.mp3");
   chicken_dead = new Audio("audio/chicken_dead.mp3");
@@ -26,9 +25,8 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.background_music.volume = 0.1;
-    this.background_music.play();
     this.run();
+    this.throwBottle();
   }
 
   setWorld() {
@@ -38,10 +36,16 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkThrowObjects();
+      this.checkIsJumpedOn();
       this.collectItems("coins", 10, this.coinsBar);
       this.collectItems("salsaBottle", 20, this.bottleBar);
-    }, 200);
+    }, 50);
+  }
+
+  throwBottle() {
+    setInterval(() => {
+      this.checkThrowObjects();
+    }, 100);
   }
 
   checkThrowObjects() {
@@ -55,31 +59,41 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy, index) => {
-      if (this.character.isJumpedOn(enemy) && !enemy.jumpedOn) {
-        enemy.jumpedOn = true;
-        this.chicken_dead.play();
-        this.character.jump(10); // Make the character bounce back after hitting an enemy
-        setTimeout(() => {
-          this.level.enemies.splice(index, 1);
-        }, 1000);
-      } else if (
-        this.character.isCollidingHorizontal(enemy) &&
-        !enemy.jumpedOn &&
-        !this.character.isJumpedOn(enemy) // Ensure we don't double count a collision
-      ) {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar.setPercentage(this.character.energy);
       }
     });
   }
 
+  checkIsJumpedOn() {
+    this.level.enemies.forEach((enemy, index) => {
+      if (
+        this.character.isJumpedOn(enemy) &&
+        this.character.isAboveGround() &&
+        !enemy.isEnemyDead
+      ) {
+        this.killedEnemy(enemy, index);
+      }
+    });
+  }
+
+  killedEnemy(enemy, index) {
+    enemy.isEnemyDead = true;
+    this.chicken_dead.play();
+    this.character.jump(10); // Make the character bounce back after hitting an enemy
+    setTimeout(() => {
+      this.level.enemies.splice(index, 1);
+    }, 1000);
+  }
+
   collectItems(itemType, increment, bar) {
     if (bar[itemType] >= 100) {
       return;
     }
-    this.level[itemType] = this.level[itemType].filter((item) => {
-      if (this.character.isCollidingHorizontal(item)) {
+    this.level[itemType] = this.level[itemType].filter((mo) => {
+      if (this.character.isColliding(mo)) {
         this.character[itemType] += increment;
         bar.setPercentage(this.character[itemType]);
         if (itemType === "coins") {
