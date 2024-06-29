@@ -70,10 +70,13 @@ class World {
     this.level.enemies.forEach((enemy, index) => {
       if (
         this.character.isJumpedOn(enemy) &&
-        this.character.isAboveGround() &&
-        !enemy.isEnemyDead
+        !enemy.isEnemyDead &&
+        this.character.isAboveGround() && // Ensure character is on the ground
+        new Date().getTime() - this.character.lastJumpTime >
+          this.character.jumpCooldown // Check cooldown
       ) {
         this.killedEnemy(enemy, index);
+        this.character.lastJumpTime = new Date().getTime(); // Update last jump time
       }
     });
   }
@@ -81,10 +84,11 @@ class World {
   killedEnemy(enemy, index) {
     enemy.isEnemyDead = true;
     this.chicken_dead.play();
-    this.character.jump(10); // Make the character bounce back after hitting an enemy
+    this.character.jump(5); // Make the character bounce back after hitting an enemy
     setTimeout(() => {
       this.level.enemies.splice(index, 1);
     }, 1000);
+    this.character.lastJumpTime = new Date().getTime();
   }
 
   collectItems(itemType, increment, bar) {
@@ -149,8 +153,6 @@ class World {
     }
 
     mo.draw(this.ctx);
-
-    mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);

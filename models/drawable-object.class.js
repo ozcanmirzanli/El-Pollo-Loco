@@ -28,37 +28,4 @@ class DrawableObject {
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
-
-  drawFrame(ctx) {
-    if (this instanceof Character) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.bottom - this.offset.top
-      );
-
-      ctx.stroke();
-    } else if (this instanceof Coins) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "yellow";
-      ctx.rect(this.x + 30, this.y + 30, this.width - 60, this.height - 60);
-      ctx.stroke();
-    } else if (this instanceof Chicken) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.bottom - this.offset.top
-      );
-      ctx.stroke();
-    }
-  }
 }

@@ -12,6 +12,9 @@ class Character extends MovableObject {
     right: 30,
   };
 
+  lastJumpTime = 0;
+  jumpCooldown = 500;
+
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",

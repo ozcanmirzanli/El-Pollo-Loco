@@ -26,8 +26,8 @@ class Chick extends MovableObject {
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
 
-    this.x = 200 + Math.random() * 2500;
-    this.speed = 0.15 + Math.random() * 1;
+    this.x = 200 + Math.random() * 2000;
+    this.speed = 0.5 + Math.random() * 1;
 
     this.animate();
   }
