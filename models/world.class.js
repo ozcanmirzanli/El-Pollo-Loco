@@ -63,7 +63,7 @@ class World {
   checkBottlesPosition() {
     setInterval(() => {
       this.throwableObjects = this.throwableObjects.filter(
-        (bottle) => bottle.y < 380
+        (bottle) => bottle.y < 370
       );
     }, 1000);
   }
@@ -111,12 +111,17 @@ class World {
   }
 
   killedEnemy(enemy, index) {
-    enemy.isEnemyDead = true;
-    this.chicken_dead.play();
-    setTimeout(() => {
-      this.level.enemies.splice(index, 1);
-    }, 1000); // Remove the dead enemy from the map
-    this.character.lastJumpTime = new Date().getTime();
+    if (!enemy.isEnemyDead) {
+      enemy.isEnemyDead = true;
+      this.chicken_dead.play();
+      setTimeout(() => {
+        const currentIndex = this.level.enemies.indexOf(enemy);
+        if (currentIndex === index) {
+          this.level.enemies.splice(index, 1);
+        }
+      }, 1000); // Remove the dead enemy from the map after 1 second
+      this.character.lastJumpTime = new Date().getTime();
+    }
   }
 
   collectItems(itemType, increment, bar) {

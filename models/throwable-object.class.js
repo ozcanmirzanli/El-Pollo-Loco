@@ -34,7 +34,7 @@ class ThrowableObject extends MovableObject {
     this.y = y;
     this.width = 60;
     this.height = 60;
-    this.speedY = 20;
+    this.speedY = 25;
     this.acceleration = 2; // Gravity acceleration
     this.world = world;
     this.throw();
@@ -64,6 +64,12 @@ class ThrowableObject extends MovableObject {
     setInterval(() => {
       if (this.y === 380) {
         this.playAnimation(this.SPLASH_SALSA);
+      }
+    }, 100);
+
+    setInterval(() => {
+      if (this.y < 380) {
+        this.playAnimation(this.BOTTLE_ROTATION);
       }
     }, 100);
   }
