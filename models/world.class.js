@@ -3,6 +3,7 @@ class World {
   level = level1;
   // prettier-ignore
   enemies = level1.enemies;
+  endBoss = new Endboss();
   clouds = level1.clouds;
   backgroundObjects = level1.backgroundObjects;
   canvas;
@@ -28,6 +29,7 @@ class World {
     this.run();
     this.throwBottle();
     this.checkBottlesPosition();
+    this.character.world = this;
   }
 
   setWorld() {
@@ -149,6 +151,8 @@ class World {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
+
+    this.endBoss.animate(this.camera_x);
 
     this.ctx.translate(-this.camera_x, 0);
     // ----- Space for fixed objects -----

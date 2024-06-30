@@ -10,8 +10,8 @@ function init() {
 }
 
 window.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
-    keyboard.SPACE = true;
+  if (e.code === "ArrowUp") {
+    keyboard.UP = true;
   } else if (e.code === "ArrowDown") {
     keyboard.DOWN = true;
   } else if (e.code === "ArrowLeft") {
@@ -24,8 +24,8 @@ window.addEventListener("keydown", (e) => {
 });
 
 window.addEventListener("keyup", (e) => {
-  if (e.code === "Space") {
-    keyboard.SPACE = false;
+  if (e.code === "ArrowUp") {
+    keyboard.UP = false;
   } else if (e.code === "ArrowDown") {
     keyboard.DOWN = false;
   } else if (e.code === "ArrowLeft") {

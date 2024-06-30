@@ -57,7 +57,7 @@ class ThrowableObject extends MovableObject {
         this.speedY = 0; // Stop vertical movement
         this.acceleration = 0; // Stop further acceleration effect
       }
-    }, 25);
+    }, 20);
   }
 
   animate() {
