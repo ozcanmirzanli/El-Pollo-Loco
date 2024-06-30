@@ -39,7 +39,7 @@ class World {
       this.checkIsJumpedOn();
       this.collectItems("coins", 10, this.coinsBar);
       this.collectItems("salsaBottle", 20, this.bottleBar);
-      this.bottleHit();
+      this.bottleHitEnemy();
     }, 15);
   }
 
@@ -53,7 +53,8 @@ class World {
     if (this.keyboard.D) {
       let bottle = new ThrowableObject(
         this.character.x + 100,
-        this.character.y + 100
+        this.character.y + 100,
+        this
       );
       this.throwableObjects.push(bottle);
     }
@@ -62,9 +63,9 @@ class World {
   checkBottlesPosition() {
     setInterval(() => {
       this.throwableObjects = this.throwableObjects.filter(
-        (bottle) => bottle.y < 370
+        (bottle) => bottle.y < 380
       );
-    }, 2500);
+    }, 1000);
   }
 
   removeBottle(bottle) {
@@ -72,6 +73,16 @@ class World {
     if (index > -1) {
       this.throwableObjects.splice(index, 1);
     }
+  }
+
+  bottleHitEnemy() {
+    this.throwableObjects.forEach((bottle) => {
+      this.level.enemies.forEach((enemy, index) => {
+        if (bottle.isColliding(enemy) && bottle.y >= 370) {
+          this.killedEnemy(enemy, index);
+        }
+      });
+    });
   }
 
   checkCollisions() {
@@ -93,6 +104,7 @@ class World {
           this.character.jumpCooldown // Check cooldown
       ) {
         this.killedEnemy(enemy, index);
+        this.character.jump(5); // Make the character bounce back after hitting an enemy
         this.character.lastJumpTime = new Date().getTime(); // Update last jump time
       }
     });
@@ -101,19 +113,10 @@ class World {
   killedEnemy(enemy, index) {
     enemy.isEnemyDead = true;
     this.chicken_dead.play();
-    this.character.jump(5); // Make the character bounce back after hitting an enemy
     setTimeout(() => {
       this.level.enemies.splice(index, 1);
     }, 1000); // Remove the dead enemy from the map
     this.character.lastJumpTime = new Date().getTime();
-  }
-
-  bottleHit(index) {
-    this.level.enemies.forEach((enemy) => {
-      if (this.salsaBottle.isColliding(enemy)) {
-        this.killedEnemy(enemy, index);
-      }
-    });
   }
 
   collectItems(itemType, increment, bar) {

@@ -2,11 +2,18 @@ class ThrowableObject extends MovableObject {
   throwing_sound = new Audio("audio/throw.mp3");
 
   offset = {
-    top: 20,
-    bottom: 20,
-    left: 20,
-    right: 20,
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10,
   };
+
+  BOTTLE_ROTATION = [
+    "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
+    "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
+  ];
 
   SPLASH_SALSA = [
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
@@ -21,11 +28,13 @@ class ThrowableObject extends MovableObject {
     super();
     this.loadImage("img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
     this.loadImages(this.SPLASH_SALSA);
+    this.loadImages(this.BOTTLE_ROTATION);
+
     this.x = x;
     this.y = y;
     this.width = 60;
     this.height = 60;
-    this.speedY = 30;
+    this.speedY = 20;
     this.acceleration = 2; // Gravity acceleration
     this.world = world;
     this.throw();
