@@ -27,6 +27,7 @@ class World {
     this.setWorld();
     this.run();
     this.throwBottle();
+    this.checkBottlesPosition();
   }
 
   setWorld() {
@@ -38,6 +39,7 @@ class World {
       this.checkIsJumpedOn();
       this.collectItems("coins", 10, this.coinsBar);
       this.collectItems("salsaBottle", 20, this.bottleBar);
+      this.bottleHit();
     }, 15);
   }
 
@@ -57,6 +59,21 @@ class World {
     }
   }
 
+  checkBottlesPosition() {
+    setInterval(() => {
+      this.throwableObjects = this.throwableObjects.filter(
+        (bottle) => bottle.y < 370
+      );
+    }, 2500);
+  }
+
+  removeBottle(bottle) {
+    const index = this.throwableObjects.indexOf(bottle);
+    if (index > -1) {
+      this.throwableObjects.splice(index, 1);
+    }
+  }
+
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
@@ -71,7 +88,7 @@ class World {
       if (
         this.character.isJumpedOn(enemy) &&
         !enemy.isEnemyDead &&
-        this.character.isAboveGround() && // Ensure character is on the ground
+        this.character.isAboveGround() && // Ensure character is not on the ground
         new Date().getTime() - this.character.lastJumpTime >
           this.character.jumpCooldown // Check cooldown
       ) {
@@ -87,8 +104,16 @@ class World {
     this.character.jump(5); // Make the character bounce back after hitting an enemy
     setTimeout(() => {
       this.level.enemies.splice(index, 1);
-    }, 1000);
+    }, 1000); // Remove the dead enemy from the map
     this.character.lastJumpTime = new Date().getTime();
+  }
+
+  bottleHit(index) {
+    this.level.enemies.forEach((enemy) => {
+      if (this.salsaBottle.isColliding(enemy)) {
+        this.killedEnemy(enemy, index);
+      }
+    });
   }
 
   collectItems(itemType, increment, bar) {
