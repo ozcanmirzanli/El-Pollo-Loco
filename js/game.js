@@ -2,11 +2,15 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-function init() {
+async function init() {
+  document.querySelector(".start-screen").style.display = "none";
+  document.getElementById("canvas").style.display = "block";
+  document.querySelector(".play-btn").style.display = "none";
+
+  initLevel();
+
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
-
-  console.log("My Character is", world.character);
 }
 
 window.addEventListener("keydown", (e) => {

@@ -25,14 +25,12 @@
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
   </head>
-  <body onload="init()">
+  <body>
     <h1>El Pollo Loco</h1>
     <canvas id="canvas" width="720" height="480"></canvas>
-    <div class="play-keys">
-      <h2>&#8592; = LEFT</h2>
-      <h2>&#8594; = RIGHT</h2>
-      <h2>&#8593; = JUMP</h2>
-      <h2>D = THROW</h2>
+
+    <div class="play-container">
+      <button class="play-btn" onclick="init()">PLAY</button>
     </div>
     <div class="start-screen">
       <img
@@ -40,9 +38,12 @@
         alt="start-screen"
         class="start-screen"
       />
-      <div class="play-container">
-        <button class="play-btn">Play</button>
-      </div>
+    </div>
+    <div class="play-keys">
+      <h2>&#8592; = LEFT</h2>
+      <h2>&#8594; = RIGHT</h2>
+      <h2>&#8593; = JUMP</h2>
+      <h2>D = THROW</h2>
     </div>
   </body>
 </html>
