@@ -11,6 +11,7 @@ class World {
   camera_x = 0;
   keyboard;
   statusBar = new Statusbar();
+  statusBarEndBoss = new StatusbarEndBoss();
   coinsBar = new Coinsbar();
   bottleBar = new Bottlebar();
   throwableObjects = [];
@@ -42,6 +43,7 @@ class World {
       this.collectItems("coins", 10, this.coinsBar);
       this.collectItems("salsaBottle", 20, this.bottleBar);
       this.bottleHitEnemy();
+      this.bottleHitEndBoss();
     }, 15);
   }
 
@@ -87,6 +89,18 @@ class World {
     });
   }
 
+  bottleHitEndBoss() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.isColliding(this.endBoss) && bottle.y >= 370) {
+        this.endBoss.hit(); // Ensure Endboss has the hit method
+        if (this.endBoss.isDead()) {
+          this.killedEndBoss();
+        }
+        this.removeBottle(bottle);
+      }
+    });
+  }
+
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
@@ -126,6 +140,13 @@ class World {
     }
   }
 
+  killedEndBoss() {
+    if (!this.endBoss.isEnemyDead) {
+      this.endBoss.isEnemyDead = true;
+      this.chicken_dead.play();
+    }
+  }
+
   collectItems(itemType, increment, bar) {
     if (bar[itemType] >= 100) {
       return;
@@ -155,6 +176,7 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     // ----- Space for fixed objects -----
     this.addToMap(this.statusBar);
+    this.addToMap(this.statusBarEndBoss);
     this.addToMap(this.coinsBar);
     this.addToMap(this.bottleBar);
 

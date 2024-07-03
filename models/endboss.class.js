@@ -5,10 +5,10 @@ class Endboss extends MovableObject {
   isEnemyDead = false;
 
   offset = {
-    top: 200,
-    bottom: 200,
-    left: 200,
-    right: 200,
+    top: 220,
+    bottom: 20,
+    left: 80,
+    right: 60,
   };
 
   world;
@@ -43,15 +43,15 @@ class Endboss extends MovableObject {
   ];
 
   IMAGES_HURT = [
-    "img/4_enemie_boss_chicken/3_attack/G21.png",
-    "img/4_enemie_boss_chicken/3_attack/G22.png",
-    "img/4_enemie_boss_chicken/3_attack/G23.png",
+    "img/4_enemie_boss_chicken/4_hurt/G21.png",
+    "img/4_enemie_boss_chicken/4_hurt/G22.png",
+    "img/4_enemie_boss_chicken/4_hurt/G23.png",
   ];
 
   IMAGES_DEAD = [
-    "img/4_enemie_boss_chicken/3_attack/G24.png",
-    "img/4_enemie_boss_chicken/3_attack/G25.png",
-    "img/4_enemie_boss_chicken/3_attack/G26.png",
+    "img/4_enemie_boss_chicken/5_dead/G24.png",
+    "img/4_enemie_boss_chicken/5_dead/G25.png",
+    "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
   hadFirstContact = false;
@@ -63,6 +63,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_DEAD);
 
     this.x = 2300;
 
@@ -70,8 +71,8 @@ class Endboss extends MovableObject {
     this.applyGravity();
 
     this.animate();
-
-    this.attack();
+    this.attackAnimation();
+    this.deadAnimation();
   }
 
   animate() {
@@ -82,7 +83,7 @@ class Endboss extends MovableObject {
       if (i < 10) {
         this.playAnimation(this.IMAGES_ALERT[0]);
         this.playAnimation(this.IMAGES_ALERT);
-      } else if (this.hadFirstContact) {
+      } else if (this.hadFirstContact && !this.isEnemyDead) {
         this.moveLeft();
         this.playAnimation(this.IMAGES_WALKING);
       } else {
@@ -98,9 +99,9 @@ class Endboss extends MovableObject {
     }, 150);
   }
 
-  attack() {
+  attackAnimation() {
     setInterval(() => {
-      if (this.hadFirstContact) {
+      if (this.hadFirstContact && !this.isEnemyDead) {
         this.playAttackAnimation();
 
         setTimeout(() => {
@@ -119,5 +120,15 @@ class Endboss extends MovableObject {
         clearInterval(attackInterval);
       }
     }, 300);
+  }
+
+  deadAnimation() {
+    setInterval(() => {
+      if (this.isEnemyDead) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else {
+        this.playAnimation(this.IMAGES_WALKING);
+      }
+    }, 200);
   }
 }
