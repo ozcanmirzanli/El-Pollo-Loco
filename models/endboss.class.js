@@ -82,16 +82,17 @@ class Endboss extends MovableObject {
       this.playAnimation(this.IMAGES_ALERT[0]);
 
       if (i < 10) {
-        this.playAnimation(this.IMAGES_ALERT[0]);
         this.playAnimation(this.IMAGES_ALERT);
       } else if (this.hadFirstContact && !this.isEnemyDead) {
         this.moveLeft();
         this.playAnimation(this.IMAGES_WALKING);
-      } else if (this.isHurtByCharacter()) {
+      } else if (this.isHurtByCharacter() && !this.isEnemyDead) {
         this.playAnimation(this.IMAGES_HURT);
         this.world.statusBar.setPercentage(this.energy);
+      } else if (this.isEnemyDead) {
+        this.playAnimation(this.IMAGES_DEAD);
       } else {
-        this.playAnimation(this.IMAGES_WALKING);
+        this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");
       }
       i++;
 
@@ -142,11 +143,9 @@ class Endboss extends MovableObject {
   }
 
   hit() {
-    this.energy -= 5; // Decrease energy by 10 for each hit
-    if (this.energy < 0) {
+    this.energy -= 5;
+    if (this.energy <= 0) {
       this.energy = 0;
-    }
-    if (this.energy === 0) {
       this.isEnemyDead = true;
     }
   }
