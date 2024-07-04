@@ -25,16 +25,18 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.character.world = this;
+    this.endBoss.world = this;
     this.draw();
     this.setWorld();
     this.run();
     this.throwBottle();
     this.checkBottlesPosition();
-    this.character.world = this;
   }
 
   setWorld() {
     this.character.world = this;
+    this.endBoss.world = this;
   }
 
   run() {
@@ -91,12 +93,12 @@ class World {
 
   bottleHitEndBoss() {
     this.throwableObjects.forEach((bottle) => {
-      if (bottle.isColliding(this.endBoss) && bottle.y >= 370) {
-        this.endBoss.hit(); // Ensure Endboss has the hit method
+      if (bottle.isColliding(this.endBoss)) {
+        this.endBoss.hit();
+        this.statusBarEndBoss.setPercentage(this.endBoss.energy);
         if (this.endBoss.isDead()) {
           this.killedEndBoss();
         }
-        this.removeBottle(bottle);
       }
     });
   }
@@ -144,6 +146,7 @@ class World {
     if (!this.endBoss.isEnemyDead) {
       this.endBoss.isEnemyDead = true;
       this.chicken_dead.play();
+      this.endBoss.deadAnimation();
     }
   }
 
@@ -184,10 +187,10 @@ class World {
 
     this.addToMap(this.character);
 
-    this.addObjectsToMap(this.level.coins);
-    this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.salsaBottle);
+    this.addObjectsToMap(this.level.coins);
+    this.addObjectsToMap(this.level.enemies);
 
     this.ctx.translate(-this.camera_x, 0);
 

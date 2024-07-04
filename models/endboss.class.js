@@ -3,12 +3,13 @@ class Endboss extends MovableObject {
   width = 200;
   y = 0;
   isEnemyDead = false;
+  energy = 100;
 
   offset = {
-    top: 220,
-    bottom: 20,
-    left: 80,
-    right: 60,
+    top: 50,
+    bottom: 50,
+    left: 50,
+    right: 50,
   };
 
   world;
@@ -86,6 +87,9 @@ class Endboss extends MovableObject {
       } else if (this.hadFirstContact && !this.isEnemyDead) {
         this.moveLeft();
         this.playAnimation(this.IMAGES_WALKING);
+      } else if (this.isHurtByCharacter()) {
+        this.playAnimation(this.IMAGES_HURT);
+        this.world.statusBar.setPercentage(this.energy);
       } else {
         this.playAnimation(this.IMAGES_WALKING);
       }
@@ -123,12 +127,27 @@ class Endboss extends MovableObject {
   }
 
   deadAnimation() {
-    setInterval(() => {
-      if (this.isEnemyDead) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
-    }, 200);
+    this.playAnimation(this.IMAGES_DEAD);
+  }
+
+  isHurtByCharacter() {
+    if (!this.world || !this.world.salsaBottle) return false;
+    const hurtByCharacter = this.world.salsaBottle.some(
+      (bottle) => bottle.isColliding(this) && !this.isEnemyDead
+    );
+    if (hurtByCharacter) {
+      this.hit();
+    }
+    return hurtByCharacter;
+  }
+
+  hit() {
+    this.energy -= 5; // Decrease energy by 10 for each hit
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
+    if (this.energy === 0) {
+      this.isEnemyDead = true;
+    }
   }
 }
