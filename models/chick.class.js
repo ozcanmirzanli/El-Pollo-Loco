@@ -1,14 +1,14 @@
 class Chick extends MovableObject {
   width = 25;
   height = 25;
-  y = 390;
+  y = 395;
   isEnemyDead = false;
 
   offset = {
-    top: 20,
-    bottom: 20,
-    left: 20,
-    right: 20,
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10,
   };
 
   IMAGES_WALKING = [
