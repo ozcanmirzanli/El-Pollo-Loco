@@ -1,11 +1,12 @@
 class ThrowableObject extends MovableObject {
   throwing_sound = new Audio("audio/throw.mp3");
+  hasSplashed = false;
 
   offset = {
-    top: 10,
-    bottom: 10,
-    left: 10,
-    right: 10,
+    top: 15,
+    bottom: 15,
+    left: 15,
+    right: 15,
   };
 
   BOTTLE_ROTATION = [
@@ -35,7 +36,7 @@ class ThrowableObject extends MovableObject {
     this.width = 60;
     this.height = 60;
     this.speedY = 25;
-    this.acceleration = 2; // Gravity acceleration
+    this.acceleration = 2;
     this.world = world;
     this.throw();
     this.animate();
@@ -49,26 +50,31 @@ class ThrowableObject extends MovableObject {
 
   hitBottleToFloor() {
     this.throwInterval = setInterval(() => {
-      this.x += 5;
+      this.x += 4;
 
       if (this.y >= 380) {
-        this.y = 380; // Ensure the object stays at y=370
-        clearInterval(this.throwInterval); // Stop horizontal movement
-        this.speedY = 0; // Stop vertical movement
-        this.acceleration = 0; // Stop further acceleration effect
+        this.y = 380; // Ensure the object stays at y=380
+        this.playSplashAnimationAndRemove();
       }
     }, 20);
   }
 
+  playSplashAnimationAndRemove() {
+    if (!this.hasSplashed) {
+      this.hasSplashed = true;
+      clearInterval(this.throwInterval); // Stop horizontal movement
+      this.speedY = 0; // Stop vertical movement
+      this.acceleration = 0; // Stop further acceleration effect
+      this.playAnimation(this.SPLASH_SALSA);
+      setTimeout(() => {
+        this.world.removeBottle(this); // Remove the bottle after the splash animation
+      }, this.SPLASH_SALSA.length * 100); // Each frame takes 100ms
+    }
+  }
+
   animate() {
     setInterval(() => {
-      if (this.y === 380) {
-        this.playAnimation(this.SPLASH_SALSA);
-      }
-    }, 100);
-
-    setInterval(() => {
-      if (this.y < 380) {
+      if (this.y < 380 && !this.hasSplashed) {
         this.playAnimation(this.BOTTLE_ROTATION);
       }
     }, 100);

@@ -83,18 +83,16 @@ class World {
     }, 1000);
   }
 
-  removeBottle(bottle) {
-    const index = this.throwableObjects.indexOf(bottle);
-    if (index > -1) {
-      this.throwableObjects.splice(index, 1);
-    }
-  }
-
   bottleHitEnemy() {
     this.throwableObjects.forEach((bottle) => {
       this.level.enemies.forEach((enemy, index) => {
-        if (bottle.isColliding(enemy) && bottle.y >= 370) {
+        if (
+          bottle.isColliding(enemy) &&
+          bottle.y < 380 &&
+          !bottle.hasSplashed
+        ) {
           this.killedEnemy(enemy, index);
+          bottle.playSplashAnimationAndRemove();
         }
       });
     });
@@ -102,14 +100,26 @@ class World {
 
   bottleHitEndBoss() {
     this.throwableObjects.forEach((bottle) => {
-      if (bottle.isColliding(this.endBoss)) {
+      if (
+        bottle.isColliding(this.endBoss) &&
+        bottle.y < 380 &&
+        !bottle.hasSplashed
+      ) {
         this.endBoss.hit();
         this.statusBarEndBoss.setPercentage(this.endBoss.energy);
         if (this.endBoss.isDead()) {
           this.killedEndBoss();
         }
+        bottle.playSplashAnimationAndRemove();
       }
     });
+  }
+
+  removeBottle(bottle) {
+    const index = this.throwableObjects.indexOf(bottle);
+    if (index > -1) {
+      this.throwableObjects.splice(index, 1);
+    }
   }
 
   checkCollisions() {
@@ -204,10 +214,10 @@ class World {
 
     this.addToMap(this.character);
 
-    this.addObjectsToMap(this.throwableObjects);
-    this.addObjectsToMap(this.level.salsaBottle);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.level.salsaBottle);
 
     this.ctx.translate(-this.camera_x, 0);
 
