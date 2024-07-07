@@ -2,13 +2,6 @@ class ThrowableObject extends MovableObject {
   throwing_sound = new Audio("audio/throw.mp3");
   hasSplashed = false;
 
-  offset = {
-    top: 15,
-    bottom: 15,
-    left: 15,
-    right: 15,
-  };
-
   BOTTLE_ROTATION = [
     "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",

@@ -172,16 +172,19 @@ class World {
   collectItems(itemType, increment, bar) {
     if (bar[itemType] >= 100) {
       return;
+    } else if (
+      itemType === "salsaBottle" &&
+      this.character.salsaBottle >= 100
+    ) {
+      return;
     }
+
     this.level[itemType] = this.level[itemType].filter((mo) => {
       if (this.character.isColliding(mo)) {
-        console.log(`Collected ${itemType}: ${increment}`); // Debugging
         if (itemType === "salsaBottle") {
           this.character.salsaBottle += increment; // Increment by the specified amount
-          console.log(`Total salsaBottles: ${this.character.salsaBottle}`); // Debugging
         } else {
           this.character[itemType] += increment;
-          console.log(`Total ${itemType}: ${this.character[itemType]}`); // Debugging
         }
         bar.setPercentage(this.character.salsaBottle); // Update the bar with the correct value
         if (itemType === "coins") {

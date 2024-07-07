@@ -7,8 +7,8 @@ class Chicken extends MovableObject {
   offset = {
     top: 30,
     bottom: 30,
-    left: 30,
-    right: 30,
+    left: 40,
+    right: 40,
   };
 
   walking_sound = new Audio("audio/chickens.mp3");

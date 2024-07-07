@@ -3,7 +3,6 @@ class Endboss extends MovableObject {
   width = 200;
   y = 0;
   isEnemyDead = false;
-  energy = 100;
 
   offset = {
     top: 50,
@@ -73,7 +72,6 @@ class Endboss extends MovableObject {
 
     this.animate();
     this.attackAnimation();
-    this.deadAnimation();
   }
 
   animate() {
@@ -127,10 +125,6 @@ class Endboss extends MovableObject {
     }, 300);
   }
 
-  deadAnimation() {
-    this.playAnimation(this.IMAGES_DEAD);
-  }
-
   isHurtByCharacter() {
     if (!this.world || !this.world.salsaBottle) return false;
     const hurtByCharacter = this.world.salsaBottle.some(
@@ -143,10 +137,12 @@ class Endboss extends MovableObject {
   }
 
   hit() {
-    this.energy -= 5;
-    if (this.energy <= 0) {
-      this.energy = 0;
-      this.isEnemyDead = true;
+    if (!this.isEnemyDead) {
+      this.energy -= 5;
+      if (this.energy <= 0) {
+        this.energy = 0;
+        this.isEnemyDead = true;
+      }
     }
   }
 }

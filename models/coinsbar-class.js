@@ -27,7 +27,7 @@ class Coinsbar extends MovableObject {
   }
 
   resolveImageIndex() {
-    if (this.coins === 100) {
+    if (this.coins >= 100) {
       return 5;
     } else if (this.coins > 80) {
       return 4;

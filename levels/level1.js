@@ -92,6 +92,9 @@ function initLevel() {
       new SalsaBottle(),
       new SalsaBottle(),
       new SalsaBottle(),
+      new SalsaBottle(),
+      new SalsaBottle(),
+      new SalsaBottle(),
     ]
   );
 }
