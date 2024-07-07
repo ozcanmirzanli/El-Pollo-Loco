@@ -50,8 +50,12 @@ class ThrowableObject extends MovableObject {
 
   hitBottleToFloor() {
     this.throwInterval = setInterval(() => {
-      this.x += 4;
-
+      // Check the direction and move the bottle accordingly
+      if (this.world.character.otherDirection) {
+        this.x -= 4; // Move left if character is facing left
+      } else {
+        this.x += 4; // Move right if character is facing right
+      }
       if (this.y >= 380) {
         this.y = 380; // Ensure the object stays at y=380
         this.playSplashAnimationAndRemove();
