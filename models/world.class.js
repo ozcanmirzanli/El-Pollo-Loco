@@ -27,6 +27,8 @@ class World {
     this.keyboard = keyboard;
     this.character.world = this;
     this.endBoss.world = this;
+    this.bottleBar = new Bottlebar(this.character.salsaBottle);
+
     this.draw();
     this.setWorld();
     this.run();
@@ -42,8 +44,8 @@ class World {
   run() {
     setInterval(() => {
       this.checkIsJumpedOn();
-      this.collectItems("coins", 10, this.coinsBar);
-      this.collectItems("salsaBottle", 20, this.bottleBar);
+      this.collectItems("coins", 15, this.coinsBar);
+      this.collectItems("salsaBottle", 15, this.bottleBar);
       this.bottleHitEnemy();
       this.bottleHitEndBoss();
     }, 15);
@@ -56,14 +58,21 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.D) {
+    if (this.keyboard.D && this.canThrowBottle()) {
       let bottle = new ThrowableObject(
         this.character.x + 100,
         this.character.y + 100,
         this
       );
       this.throwableObjects.push(bottle);
+      this.character.salsaBottle -= 10; // Decrement bottles by 10
+      this.bottleBar.setPercentage(this.character.salsaBottle); // Update bottle bar
+      this.bottle_sound.play();
     }
+  }
+
+  canThrowBottle() {
+    return this.character.salsaBottle >= 10;
   }
 
   checkBottlesPosition() {
@@ -156,13 +165,21 @@ class World {
     }
     this.level[itemType] = this.level[itemType].filter((mo) => {
       if (this.character.isColliding(mo)) {
-        this.character[itemType] += increment;
-        bar.setPercentage(this.character[itemType]);
+        console.log(`Collected ${itemType}: ${increment}`); // Debugging
+        if (itemType === "salsaBottle") {
+          this.character.salsaBottle += increment; // Increment by the specified amount
+          console.log(`Total salsaBottles: ${this.character.salsaBottle}`); // Debugging
+        } else {
+          this.character[itemType] += increment;
+          console.log(`Total ${itemType}: ${this.character[itemType]}`); // Debugging
+        }
+        bar.setPercentage(this.character.salsaBottle); // Update the bar with the correct value
         if (itemType === "coins") {
           this.coin_sound.play();
         } else {
           this.bottle_sound.play();
         }
+
         return false; // Remove item from array
       }
       return true; // Keep item in array

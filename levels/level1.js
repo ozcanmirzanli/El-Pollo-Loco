@@ -73,7 +73,7 @@ function initLevel() {
       ),
     ],
     [
-      new Coins(400 + Math.random() * 1500, 200 + Math.random() * 100),
+      new Coins(400 + Math.random() * 1500, 200 + Math.random() * 10),
       new Coins(400 + Math.random() * 1500, 200 + Math.random() * 10),
       new Coins(400 + Math.random() * 1500, 100 + Math.random() * 10),
       new Coins(400 + Math.random() * 1500, 200 + Math.random() * 10),

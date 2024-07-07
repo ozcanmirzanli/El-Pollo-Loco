@@ -7,12 +7,12 @@ class Bottlebar extends MovableObject {
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/80.png",
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png",
   ];
-  bottles = 0;
 
-  constructor() {
+  constructor(initialBottles = 0) {
     super();
+    this.bottles = initialBottles;
     this.loadImages(this.IMAGES_BOTTLES);
-    this.setPercentage(0);
+    this.setPercentage(initialBottles);
 
     this.x = 10;
     this.y = 80;
@@ -27,7 +27,7 @@ class Bottlebar extends MovableObject {
   }
 
   resolveImageIndex() {
-    if (this.bottles === 100) {
+    if (this.bottles >= 100) {
       return 5;
     } else if (this.bottles > 80) {
       return 4;
@@ -35,7 +35,7 @@ class Bottlebar extends MovableObject {
       return 3;
     } else if (this.bottles > 40) {
       return 2;
-    } else if (this.bottles > 20) {
+    } else if (this.bottles >= 20) {
       return 1;
     } else {
       return 0;

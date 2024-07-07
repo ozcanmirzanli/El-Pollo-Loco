@@ -5,6 +5,9 @@ class Character extends MovableObject {
   y = 20;
   speed = 5;
 
+  totalBottles = 100;
+  salsaBottle = 0;
+
   offset = {
     top: 120,
     bottom: 10,

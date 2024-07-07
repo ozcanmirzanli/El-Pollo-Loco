@@ -35,7 +35,7 @@ class Coinsbar extends MovableObject {
       return 3;
     } else if (this.coins > 40) {
       return 2;
-    } else if (this.coins > 20) {
+    } else if (this.coins >= 20) {
       return 1;
     } else {
       return 0;
