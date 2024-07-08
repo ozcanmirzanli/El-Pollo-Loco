@@ -2,7 +2,6 @@ class Endboss extends MovableObject {
   height = 250;
   width = 200;
   y = 0;
-  isEnemyDead = false;
 
   offset = {
     top: 50,
@@ -92,7 +91,7 @@ class Endboss extends MovableObject {
     if (
       this.hadFirstContact &&
       !world.bottleHitEndBoss() &&
-      !this.isEnemyDead
+      !world.isBossDead()
     ) {
       this.moveLeft();
       this.playAnimation(this.IMAGES_WALKING);
@@ -106,7 +105,7 @@ class Endboss extends MovableObject {
   }
 
   deadAnimation() {
-    if (this.isEnemyDead) {
+    if (world.isBossDead()) {
       this.playAnimation(this.IMAGES_DEAD);
     }
   }
@@ -116,7 +115,7 @@ class Endboss extends MovableObject {
       if (
         this.hadFirstContact &&
         !world.bottleHitEndBoss() &&
-        !this.isEnemyDead
+        !world.isBossDead()
       ) {
         this.playAnimation(this.IMAGES_ATTACK);
         setTimeout(() => {
@@ -127,13 +126,8 @@ class Endboss extends MovableObject {
   }
 
   hitEndboss() {
-    if (!this.isEnemyDead) {
+    if (!world.isBossDead()) {
       this.energy -= 0.5;
-      if (this.energy === 0) {
-        this.energy = 0;
-        this.isEnemyDead = true;
-      }
-      return this.isEnemyDead;
     }
   }
 }

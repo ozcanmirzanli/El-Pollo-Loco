@@ -111,6 +111,16 @@ class World {
     return hit;
   }
 
+  isBossDead() {
+    let isBossDead = false;
+
+    if (this.endBoss.energy <= 0) {
+      this.endBoss.energy = 0;
+      isBossDead = true;
+    }
+    return isBossDead;
+  }
+
   removeBottle(bottle) {
     const index = this.throwableObjects.indexOf(bottle);
     if (index > -1) {
