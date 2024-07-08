@@ -74,7 +74,6 @@ class Endboss extends MovableObject {
     this.applyGravity();
 
     this.animate();
-    this.attackAnimation();
   }
 
   animate() {
@@ -105,6 +104,7 @@ class Endboss extends MovableObject {
     if (world.bottleHitEndBoss()) {
       this.playAnimation(this.IMAGES_HURT);
       this.endboss_angry.play();
+      setTimeout(() => this.attackAnimation(), 800);
     }
   }
 
@@ -116,22 +116,14 @@ class Endboss extends MovableObject {
   }
 
   attackAnimation() {
-    setInterval(() => {
-      if (
-        this.hadFirstContact &&
-        !world.bottleHitEndBoss() &&
-        !world.isBossDead()
-      ) {
-        this.playAnimation(this.IMAGES_ATTACK);
-        setTimeout(() => {
-          this.jump(30);
-        }, 2000);
+    this.playAnimation(this.IMAGES_ATTACK);
+    setTimeout(() => {
+      this.jump(15);
+    }, 100);
 
-        setTimeout(() => {
-          this.endboss_jump.play();
-        }, 2500);
-      }
-    }, 5000);
+    setTimeout(() => {
+      this.endboss_jump.play();
+    }, 150);
   }
 
   hitEndboss() {
