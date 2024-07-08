@@ -85,13 +85,13 @@ class World {
 
   bottleHitEnemy() {
     this.throwableObjects.forEach((bottle) => {
-      this.level.enemies.forEach((enemy, index) => {
+      this.level.enemies.forEach((enemy) => {
         if (
           bottle.isColliding(enemy) &&
           bottle.y < 380 &&
           !bottle.hasSplashed
         ) {
-          this.killedEnemy(enemy, index);
+          this.killedEnemy(enemy);
           bottle.playSplashAnimationAndRemove();
         }
       });
@@ -99,20 +99,16 @@ class World {
   }
 
   bottleHitEndBoss() {
+    let hit = false;
     this.throwableObjects.forEach((bottle) => {
-      if (
-        bottle.isColliding(this.endBoss) &&
-        bottle.y < 380 &&
-        !bottle.hasSplashed
-      ) {
-        this.endBoss.hit();
+      if (bottle.isColliding(this.endBoss) && bottle.y < 380) {
+        hit = true;
+        this.endBoss.hitEndboss();
         this.statusBarEndBoss.setPercentage(this.endBoss.energy);
-        if (this.endBoss.isDead()) {
-          this.killedEndBoss();
-        }
         bottle.playSplashAnimationAndRemove();
       }
     });
+    return hit;
   }
 
   removeBottle(bottle) {
@@ -140,32 +136,27 @@ class World {
         new Date().getTime() - this.character.lastJumpTime >
           this.character.jumpCooldown // Check cooldown
       ) {
-        this.killedEnemy(enemy, index);
+        this.killedEnemy(enemy);
         this.character.jump(5); // Make the character bounce back after hitting an enemy
         this.character.lastJumpTime = new Date().getTime(); // Update last jump time
       }
     });
   }
 
-  killedEnemy(enemy, index) {
-    if (!enemy.isEnemyDead) {
+  killedEnemy(enemy) {
+    if (!enemy.isEnemyDead && !(enemy instanceof Endboss)) {
       enemy.isEnemyDead = true;
       this.chicken_dead.play();
+
+      // Remove regular enemy after 1 second
       setTimeout(() => {
-        const currentIndex = this.level.enemies.indexOf(enemy);
-        if (currentIndex === index) {
+        const index = this.level.enemies.indexOf(enemy);
+        if (index !== -1) {
           this.level.enemies.splice(index, 1);
         }
-      }, 1000); // Remove the dead enemy from the map after 1 second
-      this.character.lastJumpTime = new Date().getTime();
-    }
-  }
+      }, 1000);
 
-  killedEndBoss() {
-    if (!this.endBoss.isEnemyDead) {
-      this.endBoss.isEnemyDead = true;
-      this.chicken_dead.play();
-      this.endBoss.deadAnimation();
+      this.character.lastJumpTime = new Date().getTime();
     }
   }
 

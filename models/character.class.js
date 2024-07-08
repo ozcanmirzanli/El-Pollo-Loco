@@ -183,7 +183,12 @@ class Character extends MovableObject {
   playSleepingAnimation() {
     let currentFrame = 0;
     const sleepInterval = setInterval(() => {
-      if (!this.isSleeping || this.isDead() || this.isHurtByAnyEnemy()) {
+      if (
+        !this.isSleeping ||
+        this.isDead() ||
+        this.isHurtByAnyEnemy() ||
+        !this.world.throwBottle()
+      ) {
         clearInterval(sleepInterval);
         return;
       }

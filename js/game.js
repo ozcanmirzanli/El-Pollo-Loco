@@ -1,6 +1,9 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let intervalIds = [];
+
+intervalIds.push(this.walkingInterval);
 
 async function init() {
   document.querySelector(".start-screen").style.display = "none";
@@ -11,6 +14,10 @@ async function init() {
 
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
+}
+
+function stopGame() {
+  clearInterval(this.intervalIds);
 }
 
 window.addEventListener("keydown", (e) => {

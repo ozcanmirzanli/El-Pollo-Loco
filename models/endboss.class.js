@@ -63,6 +63,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
 
     this.x = 2300;
@@ -75,38 +76,49 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    let i = 0;
-    setInterval(() => {
-      this.playAnimation(this.IMAGES_ALERT[0]);
+    setInterval(() => this.hurtAnimation(), 150);
+    setInterval(() => this.walkAnimation(), 150);
+    setInterval(() => this.deadAnimation(), 150);
+    setInterval(() => this.checkFirstContact(), 150);
+  }
 
-      if (i < 10) {
-        this.playAnimation(this.IMAGES_ALERT);
-      } else if (this.hadFirstContact && !this.isEnemyDead) {
-        this.moveLeft();
-        this.playAnimation(this.IMAGES_WALKING);
-      } else if (this.isHurtByCharacter() && !this.isEnemyDead) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.world.statusBar.setPercentage(this.energy);
-      } else if (this.isEnemyDead) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else {
-        this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");
-      }
-      i++;
+  checkFirstContact() {
+    if (world.character.x > 1900 && !this.hadFirstContact) {
+      this.hadFirstContact = true;
+    }
+  }
 
-      if (world.character.x > 1900 && !this.hadFirstContact) {
-        i = 0;
-        this.hadFirstContact = true;
-        this.playAnimation(this.IMAGES_WALKING);
-      }
-    }, 150);
+  walkAnimation() {
+    if (
+      this.hadFirstContact &&
+      !world.bottleHitEndBoss() &&
+      !this.isEnemyDead
+    ) {
+      this.moveLeft();
+      this.playAnimation(this.IMAGES_WALKING);
+    }
+  }
+
+  hurtAnimation() {
+    if (world.bottleHitEndBoss()) {
+      this.playAnimation(this.IMAGES_HURT);
+    }
+  }
+
+  deadAnimation() {
+    if (this.isEnemyDead) {
+      this.playAnimation(this.IMAGES_DEAD);
+    }
   }
 
   attackAnimation() {
     setInterval(() => {
-      if (this.hadFirstContact && !this.isEnemyDead) {
-        this.playAttackAnimation();
-
+      if (
+        this.hadFirstContact &&
+        !world.bottleHitEndBoss() &&
+        !this.isEnemyDead
+      ) {
+        this.playAnimation(this.IMAGES_ATTACK);
         setTimeout(() => {
           this.jump(30);
         }, 2000);
@@ -114,35 +126,14 @@ class Endboss extends MovableObject {
     }, 5000);
   }
 
-  playAttackAnimation() {
-    let attackFrame = 0;
-    const attackInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_ATTACK);
-      attackFrame++;
-      if (attackFrame >= this.IMAGES_ATTACK.length) {
-        clearInterval(attackInterval);
-      }
-    }, 300);
-  }
-
-  isHurtByCharacter() {
-    if (!this.world || !this.world.salsaBottle) return false;
-    const hurtByCharacter = this.world.salsaBottle.some(
-      (bottle) => bottle.isColliding(this) && !this.isEnemyDead
-    );
-    if (hurtByCharacter) {
-      this.hit();
-    }
-    return hurtByCharacter;
-  }
-
-  hit() {
+  hitEndboss() {
     if (!this.isEnemyDead) {
-      this.energy -= 5;
-      if (this.energy <= 0) {
+      this.energy -= 0.5;
+      if (this.energy === 0) {
         this.energy = 0;
         this.isEnemyDead = true;
       }
+      return this.isEnemyDead;
     }
   }
 }
