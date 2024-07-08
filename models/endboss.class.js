@@ -11,6 +11,9 @@ class Endboss extends MovableObject {
   };
 
   world;
+  endboss_jump = new Audio("audio/endboss_jump.mp3");
+  endboss_angry = new Audio("audio/endboss_angry.mp3");
+  endboss_dead = new Audio("audio/endboss_dead.mp3");
 
   IMAGES_WALKING = [
     "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -101,12 +104,14 @@ class Endboss extends MovableObject {
   hurtAnimation() {
     if (world.bottleHitEndBoss()) {
       this.playAnimation(this.IMAGES_HURT);
+      this.endboss_angry.play();
     }
   }
 
   deadAnimation() {
     if (world.isBossDead()) {
       this.playAnimation(this.IMAGES_DEAD);
+      this.endboss_dead.play();
     }
   }
 
@@ -121,6 +126,10 @@ class Endboss extends MovableObject {
         setTimeout(() => {
           this.jump(30);
         }, 2000);
+
+        setTimeout(() => {
+          this.endboss_jump.play();
+        }, 2500);
       }
     }, 5000);
   }
