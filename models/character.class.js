@@ -88,73 +88,100 @@ class Character extends MovableObject {
 
   constructor() {
     super();
+    this.loadDefaultImages();
+    this.applyGravity();
+    this.animate();
+    this.keyboardInterval();
+    this.trackIdleTime();
+  }
 
+  loadDefaultImages() {
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_SLEEPING);
-
-    this.applyGravity();
-
-    this.animate();
-    this.trackIdleTime();
   }
 
   animate() {
     setInterval(() => {
-      this.walking_sound.pause();
-
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.otherDirection = false;
-
-        this.walking_sound.play();
-        this.idleTime = 0;
-        this.isSleeping = false;
-      }
-
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.otherDirection = true;
-
-        this.walking_sound.play();
-        this.idleTime = 0;
-        this.isSleeping = false;
-      }
-
-      if (this.world.keyboard.UP && !this.isAboveGround()) {
-        this.jump(30);
-        this.jumping_sound.play();
-        this.jumping_sound.volume = 0.5;
-        this.idleTime = 0;
-        this.isSleeping = false;
-      }
-
-      this.world.camera_x = -this.x + 100;
-    }, 1000 / 60);
-
-    setInterval(() => {
       if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-        this.dead_sound.play();
+        this.deadAnimation();
       } else if (this.isHurtByAnyEnemy()) {
-        this.playAnimation(this.IMAGES_HURT);
-        this.hurt_sound.play();
-        this.world.statusBar.setPercentage(this.energy);
+        this.hurtAnimation();
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
       } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        } else {
-          if (this.idleTime < 2) {
-            this.loadImage(this.IMAGES_WALKING[0]);
-          }
-        }
+        this.handleIdleOrWalkingAnimation();
       }
     }, 50);
+  }
+
+  handleIdleOrWalkingAnimation() {
+    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else {
+      this.handleIdleAnimation();
+    }
+  }
+
+  handleIdleAnimation() {
+    if (this.idleTime < 2) {
+      this.loadImage(this.IMAGES_WALKING[0]);
+    }
+  }
+
+  keyboardInterval() {
+    setInterval(() => {
+      this.handleMovement();
+      this.world.camera_x = -this.x + 100;
+    }, 1000 / 60);
+  }
+
+  handleMovement() {
+    this.walking_sound.pause();
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.moveHorizontally(false);
+    }
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveHorizontally(true);
+    }
+    if (this.world.keyboard.UP && !this.isAboveGround()) {
+      this.jumpFunc();
+    }
+  }
+
+  moveHorizontally(left) {
+    if (left) {
+      this.moveLeft();
+      this.otherDirection = true;
+    } else {
+      this.moveRight();
+      this.otherDirection = false;
+    }
+    this.walking_sound.play();
+    this.idleTime = 0;
+    this.isSleeping = false;
+  }
+
+  jumpFunc() {
+    this.jump(30);
+    this.jumping_sound.play();
+    this.jumping_sound.volume = 0.5;
+    this.idleTime = 0;
+    this.isSleeping = false;
+  }
+
+  deadAnimation() {
+    this.playAnimation(this.IMAGES_DEAD);
+    this.dead_sound.play();
+  }
+
+  hurtAnimation() {
+    this.playAnimation(this.IMAGES_HURT);
+    this.hurt_sound.play();
+    this.world.statusBar.setPercentage(this.energy);
   }
 
   isHurtByAnyEnemy() {
@@ -171,8 +198,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
         this.idleTime += 1; // Increment idleTime in seconds
-        if (this.idleTime > 1) {
-          // 1 seconds
+        if (this.idleTime > 2) {
           this.isSleeping = true;
           this.playSleepingAnimation();
         }
@@ -191,7 +217,7 @@ class Character extends MovableObject {
       this.playAnimation([this.IMAGES_SLEEPING[currentFrame]]);
       currentFrame++;
       if (currentFrame >= this.IMAGES_SLEEPING.length) {
-        currentFrame = 0; // Loop back to the first frame
+        currentFrame = 11; // Loop back to the 11th frame
       }
     }, 200);
   }
