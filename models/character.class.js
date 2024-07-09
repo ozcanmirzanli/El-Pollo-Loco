@@ -93,6 +93,7 @@ class Character extends MovableObject {
     this.animate();
     this.keyboardInterval();
     this.trackIdleTime();
+    this.keyboard = new Keyboard();
   }
 
   loadDefaultImages() {

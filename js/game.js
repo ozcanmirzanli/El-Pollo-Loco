@@ -23,8 +23,6 @@ function stopGame() {
 window.addEventListener("keydown", (e) => {
   if (e.code === "ArrowUp") {
     keyboard.UP = true;
-  } else if (e.code === "ArrowDown") {
-    keyboard.DOWN = true;
   } else if (e.code === "ArrowLeft") {
     keyboard.LEFT = true;
   } else if (e.code === "ArrowRight") {
@@ -37,8 +35,6 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", (e) => {
   if (e.code === "ArrowUp") {
     keyboard.UP = false;
-  } else if (e.code === "ArrowDown") {
-    keyboard.DOWN = false;
   } else if (e.code === "ArrowLeft") {
     keyboard.LEFT = false;
   } else if (e.code === "ArrowRight") {
