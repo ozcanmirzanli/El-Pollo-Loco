@@ -102,11 +102,11 @@ h2 {
 
 .game-controls {
   position: fixed;
-  bottom: 20px;
+  bottom: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   z-index: 1000;
+  display: none;
 }
 
 .control-button {
@@ -119,6 +119,13 @@ h2 {
   cursor: pointer;
 }
 
+.left-controls,
+.right-controls {
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+}
+
 .control-button:hover {
   background-color: rgba(255, 255, 255, 0.4); /* Lighten on hover */
 }
@@ -126,8 +133,6 @@ h2 {
 .control-button:active {
   background-color: rgba(255, 255, 255, 0.6); /* Darken when pressed */
 }
-
-/* Specific button styles */
 
 .left,
 .right,
@@ -154,21 +159,65 @@ h2 {
   background-image: url("img/mobile-btns/bottle.png");
 }
 
+.turn-screen-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ff8c00;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+
+.turn-text {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.turn-text h2 {
+  font-size: 50px;
+  text-align: center;
+}
+
 @media only screen and (max-width: 720px) {
+  * {
+    overflow: hidden;
+  }
+
   canvas,
   .start-screen {
     width: 100%;
   }
+
+  .turn-screen-warning {
+    display: flex;
+  }
 }
 
 @media only screen and (max-height: 480px) {
+  body,
+  html {
+    overflow: auto;
+  }
+
   canvas,
   .start-screen {
     height: 100vh;
   }
 
+  .game-controls {
+    display: flex;
+  }
+
   .play-container {
     top: 10%;
+  }
+
+  .turn-screen-warning {
+    display: none;
   }
 }
 
