@@ -1,9 +1,6 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let intervalIds = [];
-
-intervalIds.push(this.walkingInterval);
 
 async function init() {
   document.querySelector(".start-screen").style.display = "none";
@@ -16,6 +13,6 @@ async function init() {
   world = new World(canvas, keyboard);
 }
 
-function stopGame() {
-  clearInterval(this.intervalIds);
+function clearAllIntervals() {
+  for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }

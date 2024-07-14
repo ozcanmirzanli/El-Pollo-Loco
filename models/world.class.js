@@ -52,14 +52,6 @@ class World {
     }, 15);
   }
 
-  showGameOver() {
-    if (this.character.isDead()) {
-      document.querySelector(".game-over-overlay").style.display = "flex";
-    } else {
-      document.querySelector(".game-over-overlay").style.display = "none";
-    }
-  }
-
   throwBottle() {
     setInterval(() => {
       this.checkThrowObjects();
@@ -269,5 +261,20 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  showGameOver() {
+    const gameOverOverlay = document.querySelector(".game-over-overlay");
+
+    if (this.character.isDead()) {
+      gameOverOverlay.style.display = "flex";
+      // Force a reflow to ensure the transition applies
+      void gameOverOverlay.offsetWidth;
+      gameOverOverlay.classList.add("visible");
+      clearAllIntervals();
+    } else {
+      gameOverOverlay.classList.remove("visible");
+      gameOverOverlay.style.display = "none";
+    }
   }
 }

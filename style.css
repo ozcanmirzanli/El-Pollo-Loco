@@ -188,7 +188,7 @@ h2 {
 .game-over-overlay {
   position: fixed;
   z-index: 999;
-  background-color: rgba(0, 0, 0, 0.795);
+  background-color: rgba(0, 0, 0, 0.1);
   width: 720px;
   height: 480px;
   display: none;
@@ -196,6 +196,11 @@ h2 {
   justify-content: center;
   border-radius: 15px;
   margin-top: 50px;
+  transition: background-color 2s ease;
+}
+
+.game-over-overlay.visible {
+  background-color: rgba(0, 0, 0, 0.795); /* Transition to a darker black */
 }
 
 .game-over-overlay h2 {
