@@ -199,7 +199,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
         this.idleTime += 1; // Increment idleTime in seconds
-        if (this.idleTime > 2) {
+        if (this.idleTime > 1) {
           this.isSleeping = true;
           this.playSleepingAnimation();
         }
@@ -210,7 +210,12 @@ class Character extends MovableObject {
   playSleepingAnimation() {
     let currentFrame = 0;
     const sleepInterval = setInterval(() => {
-      if (!this.isSleeping || this.isDead() || this.isHurtByAnyEnemy()) {
+      if (
+        !this.isSleeping ||
+        this.isDead() ||
+        this.isHurtByAnyEnemy() ||
+        this.world.isBossDead()
+      ) {
         clearInterval(sleepInterval);
         return;
       }

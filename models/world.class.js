@@ -20,6 +20,8 @@ class World {
   coin_sound = new Audio("audio/coin.mp3");
   bottle_sound = new Audio("audio/bottle.mp3");
   chicken_dead = new Audio("audio/chicken_dead.mp3");
+  game_over_sound = new Audio("audio/game_over.mp3");
+  won_sound = new Audio("audio/won.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -264,17 +266,38 @@ class World {
   }
 
   showGameOver() {
-    const gameOverOverlay = document.querySelector(".game-over-overlay");
+    let finishedGameOverlay = document.querySelector(".finished-game-overlay");
+
+    if (this.character.isDead() || this.isBossDead()) {
+      this.gameOver();
+    } else {
+      finishedGameOverlay.classList.remove("visible");
+      finishedGameOverlay.style.display = "none";
+    }
+  }
+
+  gameOver() {
+    let finishedGameOverlay = document.querySelector(".finished-game-overlay");
+
+    finishedGameOverlay.style.display = "flex";
+    // Force a reflow to ensure the transition applies
+    void finishedGameOverlay.offsetWidth;
+    finishedGameOverlay.classList.add("visible");
+    setTimeout(() => {
+      clearAllIntervals();
+    }, 2000);
+    this.finishedGameTextAndSoundChange();
+  }
+
+  finishedGameTextAndSoundChange() {
+    let finishedGameText = document.querySelector(".finished-game-text");
 
     if (this.character.isDead()) {
-      gameOverOverlay.style.display = "flex";
-      // Force a reflow to ensure the transition applies
-      void gameOverOverlay.offsetWidth;
-      gameOverOverlay.classList.add("visible");
-      clearAllIntervals();
+      finishedGameText.innerHTML = "GAME OVER!";
+      this.game_over_sound.play();
     } else {
-      gameOverOverlay.classList.remove("visible");
-      gameOverOverlay.style.display = "none";
+      finishedGameText.innerHTML = "YOU WON!";
+      this.won_sound.play();
     }
   }
 }

@@ -67,6 +67,10 @@ h2 {
   letter-spacing: 5px;
 }
 
+.play-btn {
+  margin-top: 20px;
+}
+
 .play-btn:hover,
 .play-again-btn:hover {
   background-color: #ffa500;
@@ -92,15 +96,9 @@ h2 {
 }
 
 .play-container {
-  width: 720px;
   display: flex;
-  align-content: center;
   flex-direction: column;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
-  position: absolute;
-  top: 30%;
 }
 
 .game-controls {
@@ -185,7 +183,7 @@ h2 {
   text-align: center;
 }
 
-.game-over-overlay {
+.finished-game-overlay {
   position: fixed;
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.1);
@@ -199,11 +197,11 @@ h2 {
   transition: background-color 2s ease;
 }
 
-.game-over-overlay.visible {
+.finished-game-overlay.visible {
   background-color: rgba(0, 0, 0, 0.795); /* Transition to a darker black */
 }
 
-.game-over-overlay h2 {
+.finished-game-overlay h2 {
   position: absolute;
   margin-bottom: 20px;
   font-size: 80px;
@@ -213,6 +211,12 @@ h2 {
 
 .play-again-btn {
   margin-top: 150px;
+}
+
+.music-btn {
+  position: fixed;
+  top: 27%;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 720px) {
@@ -231,14 +235,21 @@ h2 {
 }
 
 @media only screen and (max-height: 480px) {
-  body,
-  html {
-    overflow: auto;
+  canvas,
+  .start-screen,
+  .finished-game-overlay {
+    width: 100vw;
+    height: 100vh;
+    margin-top: 0;
+    border-radius: 0;
   }
 
-  canvas,
   .start-screen {
-    height: 100vh;
+    margin-top: -24px !important;
+  }
+
+  canvas {
+    margin-bottom: 50px;
   }
 
   .game-controls {
@@ -246,7 +257,11 @@ h2 {
   }
 
   .play-container {
-    top: 10%;
+    justify-content: center;
+  }
+
+  .play-btn {
+    margin-top: 0;
   }
 
   .turn-screen-warning {
