@@ -19,27 +19,3 @@ async function init() {
 function stopGame() {
   clearInterval(this.intervalIds);
 }
-
-window.addEventListener("keydown", (e) => {
-  if (e.code === "ArrowUp") {
-    keyboard.UP = true;
-  } else if (e.code === "ArrowLeft") {
-    keyboard.LEFT = true;
-  } else if (e.code === "ArrowRight") {
-    keyboard.RIGHT = true;
-  } else if (e.code === "KeyD") {
-    keyboard.D = true;
-  }
-});
-
-window.addEventListener("keyup", (e) => {
-  if (e.code === "ArrowUp") {
-    keyboard.UP = false;
-  } else if (e.code === "ArrowLeft") {
-    keyboard.LEFT = false;
-  } else if (e.code === "ArrowRight") {
-    keyboard.RIGHT = false;
-  } else if (e.code === "KeyD") {
-    keyboard.D = false;
-  }
-});

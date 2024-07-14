@@ -103,20 +103,10 @@ h2 {
 .game-controls {
   position: fixed;
   bottom: 20px;
-  left: 20px;
-  z-index: 1000; /* Ensure controls are above other elements */
-}
-
-.left-controls {
+  width: 100%;
   display: flex;
-  justify-content: flex-start;
-  margin-left: 15%;
-}
-
-.right-controls {
-  width: 80%;
-  display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
+  z-index: 1000;
 }
 
 .control-button {
@@ -124,8 +114,8 @@ h2 {
   height: 60px;
   background-color: rgba(255, 255, 255, 0.2); /* Transparent white */
   border: 2px solid rgba(255, 255, 255, 0.4); /* Semi-transparent white border */
-  border-radius: 50%; /* Round button shape */
-  margin: 5px; /* Margin between buttons */
+  border-radius: 50%;
+  margin: 5px;
   cursor: pointer;
 }
 
@@ -139,53 +129,40 @@ h2 {
 
 /* Specific button styles */
 
-.left {
-  background-image: url("img/mobile-btns/left.png");
+.left,
+.right,
+.jump,
+.throw {
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.left {
+  background-image: url("img/mobile-btns/left.png");
 }
 
 .right {
   background-image: url("img/mobile-btns/right.png");
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 .jump {
   background-image: url("img/mobile-btns/up.png");
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 .throw {
   background-image: url("img/mobile-btns/bottle.png");
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 @media only screen and (max-width: 720px) {
-  canvas {
-    width: 100%;
-  }
-
+  canvas,
   .start-screen {
     width: 100%;
   }
 }
 
 @media only screen and (max-height: 480px) {
-  body {
-    overflow: hidden;
-  }
-
-  canvas {
-    height: 100vh;
-  }
-
+  canvas,
   .start-screen {
     height: 100vh;
   }
