@@ -48,7 +48,8 @@ h2 {
   border-radius: 15px;
 }
 
-.play-btn {
+.play-btn,
+.play-again-btn {
   position: absolute;
   z-index: 2;
   background-image: linear-gradient(45deg, #ffa500, #ffd700);
@@ -66,13 +67,15 @@ h2 {
   letter-spacing: 5px;
 }
 
-.play-btn:hover {
+.play-btn:hover,
+.play-again-btn:hover {
   background-color: #ffa500;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
 
-.play-btn:active {
+.play-btn:active,
+.play-again-btn:active {
   background-color: #ff8c00;
   transform: translateY(2px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -165,7 +168,7 @@ h2 {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #ff8c00;
+  background: linear-gradient(135deg, #ff4500, #ff8c00, #ffd700, #ff4500);
   z-index: 9999;
   justify-content: center;
   align-items: center;
@@ -180,6 +183,31 @@ h2 {
 .turn-text h2 {
   font-size: 50px;
   text-align: center;
+}
+
+.game-over-overlay {
+  position: fixed;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.795);
+  width: 720px;
+  height: 480px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  margin-top: 50px;
+}
+
+.game-over-overlay h2 {
+  position: absolute;
+  margin-bottom: 20px;
+  font-size: 80px;
+  color: white;
+  text-shadow: 6px 1px 1px rgb(0, 0, 0);
+}
+
+.play-again-btn {
+  margin-top: 150px;
 }
 
 @media only screen and (max-width: 720px) {

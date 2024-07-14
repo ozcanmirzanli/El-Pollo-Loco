@@ -48,7 +48,16 @@ class World {
       this.collectItems("salsaBottle", 15, this.bottleBar);
       this.bottleHitEnemy();
       this.bottleHitEndBoss();
+      this.showGameOver();
     }, 15);
+  }
+
+  showGameOver() {
+    if (this.character.isDead()) {
+      document.querySelector(".game-over-overlay").style.display = "flex";
+    } else {
+      document.querySelector(".game-over-overlay").style.display = "none";
+    }
   }
 
   throwBottle() {
