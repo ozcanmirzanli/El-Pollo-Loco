@@ -105,6 +105,10 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SLEEPING);
   }
 
+  hadFirstContact() {
+    return this.world.endBoss.hadFirstContact;
+  }
+
   animate() {
     setInterval(() => {
       if (this.isDead()) {

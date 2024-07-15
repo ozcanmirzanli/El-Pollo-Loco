@@ -43,52 +43,78 @@ class Keyboard extends MovableObject {
       let jumpButton = document.querySelector(".jump");
       let throwButton = document.querySelector(".throw");
 
-      if (leftButton) {
-        leftButton.addEventListener("touchstart", (e) => {
-          e.preventDefault();
-          this.LEFT = true;
-        });
+      const options = { passive: true };
 
-        leftButton.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          this.LEFT = false;
-        });
+      if (leftButton) {
+        leftButton.addEventListener(
+          "touchstart",
+          (e) => {
+            this.LEFT = true;
+          },
+          options
+        );
+
+        leftButton.addEventListener(
+          "touchend",
+          (e) => {
+            this.LEFT = false;
+          },
+          options
+        );
       }
 
       if (rightButton) {
-        rightButton.addEventListener("touchstart", (e) => {
-          e.preventDefault();
-          this.RIGHT = true;
-        });
+        rightButton.addEventListener(
+          "touchstart",
+          (e) => {
+            this.RIGHT = true;
+          },
+          options
+        );
 
-        rightButton.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          this.RIGHT = false;
-        });
+        rightButton.addEventListener(
+          "touchend",
+          (e) => {
+            this.RIGHT = false;
+          },
+          options
+        );
       }
 
       if (jumpButton) {
-        jumpButton.addEventListener("touchstart", (e) => {
-          e.preventDefault();
-          this.UP = true;
-        });
+        jumpButton.addEventListener(
+          "touchstart",
+          (e) => {
+            this.UP = true;
+          },
+          options
+        );
 
-        jumpButton.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          this.UP = false;
-        });
+        jumpButton.addEventListener(
+          "touchend",
+          (e) => {
+            this.UP = false;
+          },
+          options
+        );
       }
 
       if (throwButton) {
-        throwButton.addEventListener("touchstart", (e) => {
-          e.preventDefault();
-          this.D = true;
-        });
+        throwButton.addEventListener(
+          "touchstart",
+          (e) => {
+            this.D = true;
+          },
+          options
+        );
 
-        throwButton.addEventListener("touchend", (e) => {
-          e.preventDefault();
-          this.D = false;
-        });
+        throwButton.addEventListener(
+          "touchend",
+          (e) => {
+            this.D = false;
+          },
+          options
+        );
       }
     });
   }

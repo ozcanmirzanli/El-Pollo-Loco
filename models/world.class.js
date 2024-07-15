@@ -1,9 +1,9 @@
 class World {
   character = new Character();
+  endBoss = new Endboss();
   level = level1;
   // prettier-ignore
   enemies = level1.enemies;
-  endBoss = new Endboss();
   clouds = level1.clouds;
   backgroundObjects = level1.backgroundObjects;
   canvas;
@@ -22,6 +22,9 @@ class World {
   chicken_dead = new Audio("audio/chicken_dead.mp3");
   game_over_sound = new Audio("audio/game_over.mp3");
   won_sound = new Audio("audio/won.mp3");
+  boss_fight = new Audio("audio/boss-fight.mp3");
+
+  isGameOver = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -29,8 +32,6 @@ class World {
     this.keyboard = keyboard;
     this.character.world = this;
     this.endBoss.world = this;
-    this.bottleBar = new Bottlebar(this.character.salsaBottle);
-
     this.draw();
     this.setWorld();
     this.run();
@@ -50,7 +51,8 @@ class World {
       this.collectSalsaBottles();
       this.bottleHitEnemy();
       this.bottleHitEndBoss();
-      this.showGameOver();
+      this.checkGameOver();
+      this.bossFightSound();
     }, 15);
   }
 
@@ -142,7 +144,7 @@ class World {
     this.level.enemies.forEach((enemy, index) => {
       if (this.character.isJumpedOn(enemy) && !enemy.isEnemyDead && 
       this.character.isAboveGround() && new Date().getTime() -
-      this.character.lastJumpTime > this.character.jumpCooldown)  // Check cooldown 
+      this.character.lastJumpTime > this.character.jumpCooldown)  // Check cooldown
       {
         this.killedEnemy(enemy);
         this.character.jump(5); // Make the character bounce back after hitting an enemy
@@ -155,19 +157,17 @@ class World {
     if (!enemy.isEnemyDead && !(enemy instanceof Endboss)) {
       enemy.isEnemyDead = true;
       this.chicken_dead.play();
-      this.removeEnemy();
+
+      // Remove regular enemy after 1 second
+      setTimeout(() => {
+        const index = this.level.enemies.indexOf(enemy);
+        if (index !== -1) {
+          this.level.enemies.splice(index, 1);
+        }
+      }, 1000);
+
       this.character.lastJumpTime = new Date().getTime();
     }
-  }
-
-  removeEnemy() {
-    setTimeout(() => {
-      const index = this.level.enemies.indexOf(enemy);
-      // Remove regular enemy after 1 second
-      if (index !== -1) {
-        this.level.enemies.splice(index, 1);
-      }
-    }, 1000);
   }
 
   collectCoins() {
@@ -258,6 +258,10 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
+
+    if (this.isBossDead()) {
+      this.endBoss.deadAnimation();
+    }
   }
 
   addObjectsToMap(objects) {
@@ -290,18 +294,18 @@ class World {
     this.ctx.restore();
   }
 
-  showGameOver() {
-    let finishedGameOverlay = document.querySelector(".finished-game-overlay");
-
-    if (this.character.isDead() || this.isBossDead()) {
+  checkGameOver() {
+    if (this.character.isDead() || (this.isBossDead() && !this.isGameOver)) {
       this.gameOver();
-    } else {
-      finishedGameOverlay.classList.remove("visible");
-      finishedGameOverlay.style.display = "none";
     }
   }
 
   gameOver() {
+    if (this.isGameOver) {
+      return;
+    }
+
+    this.isGameOver = true;
     let finishedGameOverlay = document.querySelector(".finished-game-overlay");
 
     finishedGameOverlay.style.display = "flex";
@@ -309,7 +313,7 @@ class World {
     void finishedGameOverlay.offsetWidth;
     finishedGameOverlay.classList.add("visible");
     setTimeout(() => {
-      clearAllIntervals();
+      this.clearAllIntervals();
     }, 2000);
     this.finishedGameTextAndSoundChange();
   }
@@ -320,9 +324,35 @@ class World {
     if (this.character.isDead()) {
       finishedGameText.innerHTML = "GAME OVER!";
       this.game_over_sound.play();
-    } else {
+    } else if (this.isBossDead()) {
       finishedGameText.innerHTML = "YOU WON!";
       this.won_sound.play();
+    }
+    this.pauseAudio();
+  }
+
+  bossFightSound() {
+    if (this.character.hadFirstContact() && !this.isGameOver) {
+      if (this.boss_fight.paused) {
+        this.boss_fight.play();
+      }
+      this.boss_fight.volume = 0.3;
+      music.pause();
+    } else if (this.isGameOver) {
+      this.pauseAudio();
+    }
+  }
+
+  pauseAudio() {
+    music.pause();
+    this.boss_fight.pause();
+    this.boss_fight.currentTime = 0;
+  }
+
+  clearAllIntervals() {
+    let highestIntervalId = setInterval(() => {}, 1000);
+    for (let i = 0; i <= highestIntervalId; i++) {
+      clearInterval(i);
     }
   }
 }

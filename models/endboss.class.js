@@ -78,14 +78,16 @@ class Endboss extends MovableObject {
   }
 
   animate() {
-    setInterval(() => this.hurtAnimation(), 150);
-    setInterval(() => this.walkAnimation(), 150);
-    setInterval(() => this.deadAnimation(), 150);
-    setInterval(() => this.checkFirstContact(), 150);
+    setInterval(() => {
+      this.hurtAnimation();
+      this.walkAnimation();
+      this.checkFirstContact();
+      this.endBossEscaped();
+    }, 150);
   }
 
   checkFirstContact() {
-    if (world.character.x > 1900 && !this.hadFirstContact) {
+    if (world.character.x > 1700 && !this.hadFirstContact) {
       this.hadFirstContact = true;
       this.playAlertAnimation();
       this.endboss_angry.play();
@@ -155,6 +157,12 @@ class Endboss extends MovableObject {
   hitEndboss() {
     if (!world.isBossDead()) {
       this.energy -= 0.5;
+    }
+  }
+
+  endBossEscaped() {
+    if (this.x <= 0) {
+      world.gameOver();
     }
   }
 }
