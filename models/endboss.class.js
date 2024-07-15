@@ -88,6 +88,7 @@ class Endboss extends MovableObject {
     if (world.character.x > 1900 && !this.hadFirstContact) {
       this.hadFirstContact = true;
       this.playAlertAnimation();
+      this.endboss_angry.play();
     }
   }
 

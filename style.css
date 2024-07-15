@@ -245,6 +245,11 @@ h2 {
 }
 
 @media only screen and (max-height: 480px) {
+  h1,
+  .play-keys {
+    display: none;
+  }
+
   canvas,
   .start-screen,
   .finished-game-overlay {
@@ -252,14 +257,6 @@ h2 {
     height: 100vh;
     margin-top: 0;
     border-radius: 0;
-  }
-
-  .start-screen {
-    margin-top: -24px !important;
-  }
-
-  canvas {
-    margin-bottom: 50px;
   }
 
   .game-controls {
@@ -271,7 +268,7 @@ h2 {
   }
 
   .play-btn {
-    margin-top: 0;
+    margin-top: 100px;
   }
 
   .turn-screen-warning {
