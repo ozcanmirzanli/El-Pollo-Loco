@@ -3,6 +3,7 @@ let world;
 let keyboard = new Keyboard();
 
 let music = new Audio("audio/music.mp3");
+music.volume = 0.3;
 
 async function init() {
   document.querySelector(".start-screen").style.display = "none";

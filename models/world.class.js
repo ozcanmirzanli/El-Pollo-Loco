@@ -46,8 +46,8 @@ class World {
   run() {
     setInterval(() => {
       this.checkIsJumpedOn();
-      this.collectItems("coins", 15, this.coinsBar);
-      this.collectItems("salsaBottle", 15, this.bottleBar);
+      this.collectCoins();
+      this.collectSalsaBottles();
       this.bottleHitEnemy();
       this.bottleHitEndBoss();
       this.showGameOver();
@@ -86,14 +86,11 @@ class World {
     }, 1000);
   }
 
+  // prettier-ignore
   bottleHitEnemy() {
     this.throwableObjects.forEach((bottle) => {
       this.level.enemies.forEach((enemy) => {
-        if (
-          bottle.isColliding(enemy) &&
-          bottle.y < 380 &&
-          !bottle.hasSplashed
-        ) {
+        if (bottle.isColliding(enemy) && bottle.y < 380 && !bottle.hasSplashed) {
           this.killedEnemy(enemy);
           bottle.playSplashAnimationAndRemove();
         }
@@ -140,15 +137,13 @@ class World {
     });
   }
 
+  // prettier-ignore
   checkIsJumpedOn() {
     this.level.enemies.forEach((enemy, index) => {
-      if (
-        this.character.isJumpedOn(enemy) &&
-        !enemy.isEnemyDead &&
-        this.character.isAboveGround() && // Ensure character is not on the ground
-        new Date().getTime() - this.character.lastJumpTime >
-          this.character.jumpCooldown // Check cooldown
-      ) {
+      if (this.character.isJumpedOn(enemy) && !enemy.isEnemyDead && 
+      this.character.isAboveGround() && new Date().getTime() -
+      this.character.lastJumpTime > this.character.jumpCooldown)  // Check cooldown 
+      {
         this.killedEnemy(enemy);
         this.character.jump(5); // Make the character bounce back after hitting an enemy
         this.character.lastJumpTime = new Date().getTime(); // Update last jump time
@@ -160,47 +155,77 @@ class World {
     if (!enemy.isEnemyDead && !(enemy instanceof Endboss)) {
       enemy.isEnemyDead = true;
       this.chicken_dead.play();
-
-      // Remove regular enemy after 1 second
-      setTimeout(() => {
-        const index = this.level.enemies.indexOf(enemy);
-        if (index !== -1) {
-          this.level.enemies.splice(index, 1);
-        }
-      }, 1000);
-
+      this.removeEnemy();
       this.character.lastJumpTime = new Date().getTime();
     }
   }
 
+  removeEnemy() {
+    setTimeout(() => {
+      const index = this.level.enemies.indexOf(enemy);
+      // Remove regular enemy after 1 second
+      if (index !== -1) {
+        this.level.enemies.splice(index, 1);
+      }
+    }, 1000);
+  }
+
+  collectCoins() {
+    this.collectItems("coins", 15, this.coinsBar);
+  }
+
+  collectSalsaBottles() {
+    this.collectItems("salsaBottle", 15, this.bottleBar);
+  }
+
   collectItems(itemType, increment, bar) {
-    if (bar[itemType] >= 100) {
-      return;
-    } else if (
-      itemType === "salsaBottle" &&
-      this.character.salsaBottle >= 100
-    ) {
+    if (this.isMaxValueReached(itemType, bar)) {
       return;
     }
+    this.level[itemType] = this.filterAndCollectItems(itemType, increment, bar);
+  }
 
-    this.level[itemType] = this.level[itemType].filter((mo) => {
+  isMaxValueReached(itemType, bar) {
+    return (
+      bar[itemType] >= 100 ||
+      (itemType === "salsaBottle" && this.character.salsaBottle >= 100)
+    );
+  }
+
+  filterAndCollectItems(itemType, increment, bar) {
+    return this.level[itemType].filter((mo) => {
       if (this.character.isColliding(mo)) {
-        if (itemType === "salsaBottle") {
-          this.character.salsaBottle += increment; // Increment by the specified amount
-        } else {
-          this.character[itemType] += increment;
-        }
-        bar.setPercentage(this.character.salsaBottle); // Update the bar with the correct value
-        if (itemType === "coins") {
-          this.coin_sound.play();
-        } else {
-          this.bottle_sound.play();
-        }
-
+        this.incrementItem(itemType, increment);
+        this.updateBar(bar, itemType);
+        this.playItemSound(itemType);
         return false; // Remove item from array
       }
       return true; // Keep item in array
     });
+  }
+
+  incrementItem(itemType, increment) {
+    if (itemType === "salsaBottle") {
+      this.character.salsaBottle += increment;
+    } else {
+      this.character[itemType] += increment;
+    }
+  }
+
+  updateBar(bar, itemType) {
+    if (itemType === "salsaBottle") {
+      bar.setPercentage(this.character.salsaBottle);
+    } else {
+      bar.setPercentage(this.character[itemType]);
+    }
+  }
+
+  playItemSound(itemType) {
+    if (itemType === "coins") {
+      this.coin_sound.play();
+    } else {
+      this.bottle_sound.play();
+    }
   }
 
   draw() {

@@ -207,19 +207,16 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  // prettier-ignore
   playSleepingAnimation() {
     let currentFrame = 0;
     const sleepInterval = setInterval(() => {
-      if (
-        !this.isSleeping ||
-        this.isDead() ||
-        this.isHurtByAnyEnemy() ||
-        this.world.isBossDead()
+      if (!this.isSleeping || this.isDead() || this.isHurtByAnyEnemy() || this.world.isBossDead()
       ) {
         clearInterval(sleepInterval);
         return;
       }
-
+      
       this.playAnimation([this.IMAGES_SLEEPING[currentFrame]]);
       currentFrame++;
       if (currentFrame >= this.IMAGES_SLEEPING.length) {
