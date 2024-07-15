@@ -238,7 +238,11 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     // ----- Space for fixed objects -----
     this.addToMap(this.statusBar);
-    this.addToMap(this.statusBarEndBoss);
+
+    if (this.endBoss.hadFirstContact) {
+      this.addToMap(this.statusBarEndBoss);
+    }
+
     this.addToMap(this.coinsBar);
     this.addToMap(this.bottleBar);
 
@@ -258,10 +262,6 @@ class World {
     requestAnimationFrame(function () {
       self.draw();
     });
-
-    if (this.isBossDead()) {
-      this.endBoss.deadAnimation();
-    }
   }
 
   addObjectsToMap(objects) {

@@ -203,7 +203,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
         this.idleTime += 1; // Increment idleTime in seconds
-        if (this.idleTime > 1) {
+        if (this.idleTime > 2) {
           this.isSleeping = true;
           this.playSleepingAnimation();
         }
