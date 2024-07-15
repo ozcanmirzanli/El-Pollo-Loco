@@ -40,13 +40,19 @@
       <button class="play-again-btn" onclick="init()">PLAY AGAIN?</button>
     </div>
 
+    <div class="music-btn-container">
+      <img
+        class="music-btn"
+        onclick="toggleMusic()"
+        src="img/music-off.png"
+        alt="music-toggle"
+      />
+    </div>
+
     <canvas id="canvas" width="720" height="480"></canvas>
 
     <div class="play-container">
       <button class="play-btn" onclick="init()">PLAY</button>
-      <div class="music-btn">
-        <img src="img/music-off.png" alt="music-toggle" />
-      </div>
     </div>
 
     <div class="start-screen">
