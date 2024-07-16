@@ -46,12 +46,12 @@ class MovableObject extends DrawableObject {
     return this.x + this.width > mo.x && this.x < mo.x + mo.width;
   }
 
-  isJumpedOn(mo) {
+  isJumpedOn(enemy) {
     return (
-      this.isCollidingHorizontal(mo) &&
-      this.speedY <= 0 &&
-      this.y + this.height > mo.y && // The bottom of the character is at the top of the mo
-      this.y < mo.y + mo.height // The character was above the mo in the previous frame
+      this.isCollidingHorizontal(enemy) &&
+      this.speedY <= 0 && // Ensure the character is moving upward
+      this.y + this.height > enemy.y && // Ensure character is above the enemy
+      this.y < enemy.y + enemy.height // Ensure character was not above in the previous frame
     );
   }
 
@@ -90,6 +90,10 @@ class MovableObject extends DrawableObject {
   }
 
   jump(jumpHeight) {
-    this.speedY = jumpHeight;
+    const currentTime = new Date().getTime();
+    if (currentTime - this.lastJumpTime > this.jumpCooldown) {
+      this.speedY = jumpHeight;
+      this.lastJumpTime = currentTime; // Update last jump time
+    }
   }
 }

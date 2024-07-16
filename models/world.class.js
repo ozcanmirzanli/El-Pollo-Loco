@@ -136,14 +136,14 @@ class World {
 
   // prettier-ignore
   checkIsJumpedOn() {
-    this.level.enemies.forEach((enemy, index) => {
-      if (this.character.isJumpedOn(enemy) && !enemy.isEnemyDead && 
-      this.character.isAboveGround() && new Date().getTime() -
-      this.character.lastJumpTime > this.character.jumpCooldown)  // Check cooldown
-      {
+    this.level.enemies.forEach((enemy) => {
+      if (
+        this.character.isJumpedOn(enemy) &&
+        !enemy.isEnemyDead &&
+        this.character.isAboveGround()
+      ) {
         this.killedEnemy(enemy);
-        this.character.jump(5); // Make the character bounce back after hitting an enemy
-        this.character.lastJumpTime = new Date().getTime(); // Update last jump time
+        this.character.jump(5); // Example: Make the character bounce back after jump
       }
     });
   }

@@ -2,7 +2,7 @@ class Character extends MovableObject {
   width = 120;
   height = 250;
   x = 50;
-  y = 20;
+  y = 100;
   speed = 5;
 
   totalBottles = 100;
@@ -11,8 +11,8 @@ class Character extends MovableObject {
   offset = {
     top: 120,
     bottom: 10,
-    left: 40,
-    right: 40,
+    left: 30,
+    right: 30,
   };
 
   lastJumpTime = 0;

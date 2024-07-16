@@ -109,7 +109,7 @@ h2 {
   bottom: 0;
   width: 100%;
   justify-content: space-between;
-  z-index: 1000;
+  z-index: 1;
   display: none;
 }
 
@@ -247,6 +247,10 @@ h2 {
 }
 
 @media only screen and (max-width: 720px) {
+  * {
+    overflow: hidden;
+  }
+
   canvas,
   .start-screen {
     width: 100%;
@@ -258,6 +262,10 @@ h2 {
 }
 
 @media only screen and (max-height: 480px) {
+  * {
+    overflow: auto;
+  }
+
   h1,
   .play-keys {
     display: none;
