@@ -252,6 +252,33 @@ h2 {
   height: 40px;
 }
 
+.impressum {
+  position: fixed;
+  bottom: 10px;
+}
+
+p {
+  font-size: 30px;
+  text-align: center;
+}
+
+a {
+  color: black;
+  font-size: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.4); /* Semi-transparent white border */
+}
+
+.kontakt {
+  text-align: center;
+}
+
+.impressum-container {
+  display: flex;
+  justify-content: space-between;
+  height: 45%;
+  flex-direction: column;
+}
+
 @media only screen and (max-width: 1200px) {
   .game-controls {
     display: flex;
