@@ -20,7 +20,7 @@ class Character extends MovableObject {
   };
 
   lastJumpTime = 0;
-  jumpCooldown = 800;
+  jumpCooldown = 300;
   idleTime = 0;
   isSleeping = false;
 
@@ -250,7 +250,7 @@ class Character extends MovableObject {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
         this.idleTime += 1; // Increment idleTime in seconds
-        if (this.idleTime > 2) {
+        if (this.idleTime > 1) {
           this.isSleeping = true;
           this.playSleepingAnimation();
         }

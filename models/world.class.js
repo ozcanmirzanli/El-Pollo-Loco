@@ -22,6 +22,8 @@ class World {
   salsaBottle = level1.salsaBottle;
 
   isGameOver = false;
+  lastThrowTime = 0; // Timestamp of the last bottle throw
+  throwCooldown = 1000; // Cooldown period in milliseconds (1 second)
 
   /**
    * Constructs a new World instance.
@@ -70,14 +72,19 @@ class World {
   throwBottle() {
     setInterval(() => {
       this.checkThrowObjects();
-    }, 500);
+    }, 100);
   }
 
   /**
    * Checks if the character can throw a bottle and initiates the action.
    */
   checkThrowObjects() {
-    if (this.keyboard.D && this.canThrowBottle()) {
+    const now = new Date().getTime();
+    if (
+      this.keyboard.D &&
+      this.canThrowBottle() &&
+      now - this.lastThrowTime >= this.throwCooldown
+    ) {
       let bottle = new ThrowableObject(
         this.character.x + 50,
         this.character.y + 120,
@@ -87,6 +94,7 @@ class World {
       this.character.salsaBottle -= 10; // Decrement bottles by 10
       this.bottleBar.setPercentage(this.character.salsaBottle); // Update bottle bar
       this.audioElements.bottle_sound.play();
+      this.lastThrowTime = now; // Update the last throw time
     }
   }
 
