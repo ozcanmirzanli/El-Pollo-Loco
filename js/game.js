@@ -72,3 +72,19 @@ function toggleMusic() {
     musicBtn.src = "img/music-off.png";
   }
 }
+
+function toggleSound() {
+  let soundBtn = document.querySelector(".sound-btn");
+
+  // Toggle muted property for each audio element
+  for (const key in audioElements) {
+    if (audioElements.hasOwnProperty(key)) {
+      audioElements[key].muted = !audioElements[key].muted;
+    }
+  }
+
+  // Update sound button image based on current state
+  soundBtn.src = audioElements.coin_sound.muted
+    ? "img/sound-off.png"
+    : "img/sound-on.png";
+}

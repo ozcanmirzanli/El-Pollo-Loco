@@ -19,8 +19,6 @@ class Chick extends MovableObject {
 
   IMAGE_DEAD = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
 
-  walking_sound = new Audio("audio/chickens.mp3");
-
   constructor() {
     super();
     this.loadImage(this.IMAGES_WALKING[0]);

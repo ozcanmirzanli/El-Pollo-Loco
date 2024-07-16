@@ -17,12 +17,6 @@ class World {
   throwableObjects = [];
   coins = level1.coins;
   salsaBottle = level1.salsaBottle;
-  coin_sound = new Audio("audio/coin.mp3");
-  bottle_sound = new Audio("audio/bottle.mp3");
-  chicken_dead = new Audio("audio/chicken_dead.mp3");
-  game_over_sound = new Audio("audio/game_over.mp3");
-  won_sound = new Audio("audio/won.mp3");
-  boss_fight = new Audio("audio/boss-fight.mp3");
 
   isGameOver = false;
 
@@ -32,6 +26,7 @@ class World {
     this.keyboard = keyboard;
     this.character.world = this;
     this.endBoss.world = this;
+    this.audioElements = audioElements;
     this.draw();
     this.setWorld();
     this.run();
@@ -59,7 +54,7 @@ class World {
   throwBottle() {
     setInterval(() => {
       this.checkThrowObjects();
-    }, 100);
+    }, 550);
   }
 
   checkThrowObjects() {
@@ -72,7 +67,7 @@ class World {
       this.throwableObjects.push(bottle);
       this.character.salsaBottle -= 10; // Decrement bottles by 10
       this.bottleBar.setPercentage(this.character.salsaBottle); // Update bottle bar
-      this.bottle_sound.play();
+      this.audioElements.bottle_sound.play();
     }
   }
 
@@ -156,7 +151,7 @@ class World {
   killedEnemy(enemy) {
     if (!enemy.isEnemyDead && !(enemy instanceof Endboss)) {
       enemy.isEnemyDead = true;
-      this.chicken_dead.play();
+      this.audioElements.chicken_dead.play();
 
       // Remove regular enemy after 1 second
       setTimeout(() => {
@@ -222,9 +217,9 @@ class World {
 
   playItemSound(itemType) {
     if (itemType === "coins") {
-      this.coin_sound.play();
+      this.audioElements.coin_sound.play();
     } else {
-      this.bottle_sound.play();
+      this.audioElements.bottle_sound.play();
     }
   }
 
@@ -323,20 +318,20 @@ class World {
 
     if (this.character.isDead()) {
       finishedGameText.innerHTML = "GAME OVER!";
-      this.game_over_sound.play();
+      this.audioElements.game_over_sound.play();
     } else if (this.isBossDead()) {
       finishedGameText.innerHTML = "YOU WON!";
-      this.won_sound.play();
+      this.audioElements.won_sound.play();
     }
     this.pauseAudio();
   }
 
   bossFightSound() {
     if (this.character.hadFirstContact() && !this.isGameOver) {
-      if (this.boss_fight.paused) {
-        this.boss_fight.play();
+      if (this.audioElements.boss_fight.paused) {
+        this.audioElements.boss_fight.play();
       }
-      this.boss_fight.volume = 0.3;
+      this.audioElements.boss_fight.volume = 0.3;
       music.pause();
     } else if (this.isGameOver) {
       this.pauseAudio();
@@ -345,8 +340,8 @@ class World {
 
   pauseAudio() {
     music.pause();
-    this.boss_fight.pause();
-    this.boss_fight.currentTime = 0;
+    this.audioElements.boss_fight.pause();
+    this.audioElements.boss_fight.currentTime = 0;
   }
 
   clearAllIntervals() {

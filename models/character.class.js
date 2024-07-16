@@ -81,10 +81,6 @@ class Character extends MovableObject {
   ];
 
   world;
-  walking_sound = new Audio("audio/running.mp3");
-  jumping_sound = new Audio("audio/jumping.mp3");
-  hurt_sound = new Audio("audio/hurt.mp3");
-  dead_sound = new Audio("audio/dead.mp3");
 
   constructor() {
     super();
@@ -145,7 +141,7 @@ class Character extends MovableObject {
   }
 
   handleMovement() {
-    this.walking_sound.pause();
+    this.world.audioElements.walking_sound.pause();
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveHorizontally(false);
     }
@@ -165,27 +161,27 @@ class Character extends MovableObject {
       this.moveRight();
       this.otherDirection = false;
     }
-    this.walking_sound.play();
+    this.world.audioElements.walking_sound.play();
     this.idleTime = 0;
     this.isSleeping = false;
   }
 
   jumpFunc() {
     this.jump(30);
-    this.jumping_sound.play();
-    this.jumping_sound.volume = 0.5;
+    this.world.audioElements.jumping_sound.play();
+    this.world.audioElements.jumping_sound.volume = 0.5;
     this.idleTime = 0;
     this.isSleeping = false;
   }
 
   deadAnimation() {
     this.playAnimation(this.IMAGES_DEAD);
-    this.dead_sound.play();
+    this.world.audioElements.dead_sound.play();
   }
 
   hurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
-    this.hurt_sound.play();
+    this.world.audioElements.hurt_sound.play();
     this.world.statusBar.setPercentage(this.energy);
   }
 
