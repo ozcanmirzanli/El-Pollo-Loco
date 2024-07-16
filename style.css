@@ -225,7 +225,8 @@ h2 {
 }
 
 .music-btn-container,
-.sound-btn-container {
+.sound-btn-container,
+.fullscreen-btn-container {
   position: absolute;
   margin-top: 20px;
 }
@@ -234,17 +235,18 @@ h2 {
   margin-right: 100px;
 }
 
+.music-btn-container {
+  margin-left: 100px;
+}
+
 .music-btn,
-.sound-btn {
+.sound-btn,
+.fullscreen-btn {
   width: 40px;
   height: 40px;
 }
 
 @media only screen and (max-width: 720px) {
-  * {
-    overflow: hidden;
-  }
-
   canvas,
   .start-screen {
     width: 100%;

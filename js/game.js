@@ -5,14 +5,14 @@ let keyboard = new Keyboard();
 let music = new Audio("audio/music.mp3");
 music.volume = 0.3;
 
+let isFullscreen = false;
+
 async function init() {
   clearAllIntervals();
   this.isGameOver = false;
 
   hideFinishedGameOverlay();
   hideStartScreen();
-
-  checkScreenHeightAndRequestFullscreen();
 
   let musicBtn = document.querySelector(".music-btn");
   musicBtn.src = "img/music-off.png";
@@ -23,27 +23,19 @@ async function init() {
   world = new World(canvas, keyboard);
 }
 
-function requestFullscreen() {
+function toggleFullscreen() {
   const element = document.documentElement;
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
+  if (!isFullscreen) {
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
   }
+  isFullscreen = !isFullscreen;
 }
-
-function checkScreenHeightAndRequestFullscreen() {
-  if (window.innerHeight < 480) {
-    requestFullscreen();
-  }
-}
-
-// Add event listener for orientation change to handle dynamic changes
-window.addEventListener(
-  "orientationchange",
-  checkScreenHeightAndRequestFullscreen
-);
-
-// Add event listener for resize to handle window size changes
-window.addEventListener("resize", checkScreenHeightAndRequestFullscreen);
 
 function clearAllIntervals() {
   for (let i = 1; i < 9999; i++) window.clearInterval(i);
