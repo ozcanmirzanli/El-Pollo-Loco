@@ -1,3 +1,7 @@
+/**
+ * Class representing the end boss character in the game.
+ * Extends from MovableObject.
+ */
 class Endboss extends MovableObject {
   height = 250;
   width = 200;
@@ -56,6 +60,10 @@ class Endboss extends MovableObject {
   hadFirstContact = false;
   alertAnimationPlayed = false;
 
+  /**
+   * Constructs the Endboss object.
+   * Loads initial images and sets initial properties.
+   */
   constructor() {
     super();
 
@@ -74,6 +82,10 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Initiates animations for the end boss.
+   * Includes hurt animation, walking animation, checking first contact, and handling escape.
+   */
   animate() {
     setInterval(() => {
       this.hurtAnimation();
@@ -81,28 +93,45 @@ class Endboss extends MovableObject {
       this.checkFirstContact();
       this.endBossEscaped();
     }, 150);
+
+    setInterval(() => {
+      this.bossFightSound();
+    }, 15);
   }
 
+  /**
+   * Checks if the character has made first contact with the end boss and triggers alert animation.
+   * Plays angry sound effect.
+   */
   checkFirstContact() {
     if (world.character.x > 1700 && !this.hadFirstContact) {
       this.hadFirstContact = true;
       this.playAlertAnimation();
-      this.world.audioElements.endboss_angry.play();
+      world.audioElements.endboss_angry.play();
     }
   }
 
+  /**
+   * Initiates walking animation of the end boss.
+   * Moves left, plays walking animation if first contact and alert animation have been played,
+   * and the boss is not hit by a bottle or dead.
+   */
   walkAnimation() {
     if (
       this.hadFirstContact &&
       this.alertAnimationPlayed &&
       !world.bottleHitEndBoss() &&
-      !world.isBossDead()
+      !this.isBossDead()
     ) {
       this.moveLeft();
       this.playAnimation(this.IMAGES_WALKING);
     }
   }
 
+  /**
+   * Plays the alert animation of the end boss.
+   * Sets a timer to mark the end of animation and sets the alert animation flag.
+   */
   playAlertAnimation() {
     let i = 0;
     const intervalId = setInterval(() => {
@@ -116,21 +145,33 @@ class Endboss extends MovableObject {
     }, 150);
   }
 
+  /**
+   * Initiates hurt animation of the end boss upon hit by a bottle.
+   * Plays angry sound effect and sets a timer to initiate attack animation after a delay.
+   */
   hurtAnimation() {
     if (world.bottleHitEndBoss()) {
       this.playAnimation(this.IMAGES_HURT);
-      this.world.audioElements.endboss_angry.play();
+      world.audioElements.endboss_angry.play();
       setTimeout(() => this.attackAnimation(), 800);
     }
   }
 
+  /**
+   * Initiates dead animation of the end boss upon defeat.
+   * Plays dead sound effect.
+   */
   deadAnimation() {
-    if (world.isBossDead()) {
+    if (this.isBossDead()) {
       this.playAnimation(this.IMAGES_DEAD);
-      this.world.audioElements.endboss_dead.play();
+      world.audioElements.endboss_dead.play();
     }
   }
 
+  /**
+   * Initiates attack animation of the end boss.
+   * Plays attack animation frames and executes attack actions after animation ends.
+   */
   attackAnimation() {
     let i = 0;
     const intervalId = setInterval(() => {
@@ -144,19 +185,59 @@ class Endboss extends MovableObject {
     }, 150);
   }
 
+  /**
+   * Performs attack actions of the end boss.
+   * Initiates a jump action and plays jump sound effect after a delay.
+   */
   performAttackActions() {
     this.jump(15);
     setTimeout(() => {
-      this.world.audioElements.endboss_jump.play();
+      world.audioElements.endboss_jump.play();
     }, 500);
   }
 
+  /**
+   * Decreases the energy of the end boss upon being hit by a bottle.
+   * Energy is reduced unless the boss is already dead.
+   */
   hitEndboss() {
-    if (!world.isBossDead()) {
+    if (!this.isBossDead()) {
       this.energy -= 0.5;
     }
   }
 
+  /**
+   * Checks if the end boss is dead.
+   * @returns {boolean} - True if the end boss is dead, otherwise false.
+   */
+  isBossDead() {
+    let isBossDead = false;
+
+    if (this.energy <= 0) {
+      this.energy = 0;
+      isBossDead = true;
+    }
+    return isBossDead;
+  }
+
+  /**
+   * Controls the boss fight sound effects during gameplay.
+   */
+  bossFightSound() {
+    if (this.hadFirstContact && !world.isGameOver) {
+      if (world.audioElements.boss_fight.paused) {
+        world.audioElements.boss_fight.play();
+      }
+      world.audioElements.boss_fight.volume = 0.3;
+      music.pause();
+    } else if (world.isGameOver) {
+      world.pauseAudio();
+    }
+  }
+
+  /**
+   * Checks if the end boss has escaped off-screen and triggers game over if true.
+   */
   endBossEscaped() {
     if (this.x <= 0) {
       world.gameOver();

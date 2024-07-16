@@ -1,3 +1,7 @@
+/**
+ * Represents a status bar displaying the player's coins.
+ * Extends MovableObject, inheriting properties and methods related to movement and collision.
+ */
 class Coinsbar extends MovableObject {
   IMAGES_COINSBAR = [
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
@@ -7,8 +11,13 @@ class Coinsbar extends MovableObject {
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/80.png",
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png",
   ];
+
   coins = 0;
 
+  /**
+   * Constructs a new Coinsbar instance.
+   * Loads images for the coins bar, sets initial percentage, and initializes position and size.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES_COINSBAR);
@@ -20,12 +29,20 @@ class Coinsbar extends MovableObject {
     this.height = 50;
   }
 
+  /**
+   * Sets the percentage of coins and updates the displayed image accordingly.
+   * @param {number} coins - Number of coins to set.
+   */
   setPercentage(coins) {
     this.coins = coins;
     let path = this.IMAGES_COINSBAR[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Determines the index of the image in IMAGES_COINSBAR based on the current percentage of coins.
+   * @returns {number} Index of the image in IMAGES_COINSBAR.
+   */
   resolveImageIndex() {
     if (this.coins >= 100) {
       return 5;

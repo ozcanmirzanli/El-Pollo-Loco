@@ -1,15 +1,26 @@
+/**
+ * Class representing keyboard and touch controls for player interaction in the game.
+ * Extends from MovableObject.
+ */
 class Keyboard extends MovableObject {
   LEFT = false;
   RIGHT = false;
   UP = false;
   D = false;
 
+  /**
+   * Constructs the Keyboard object.
+   * Sets up keyboard and touch event listeners for controlling player actions.
+   */
   constructor() {
     super();
     this.setupKeyboardControls();
     this.setupTouchControls();
   }
 
+  /**
+   * Sets up keyboard event listeners for controlling player actions.
+   */
   setupKeyboardControls() {
     window.addEventListener("keydown", (e) => {
       if (e.code === "ArrowUp") {
@@ -36,6 +47,9 @@ class Keyboard extends MovableObject {
     });
   }
 
+  /**
+   * Sets up touch event listeners for controlling player actions on touch devices.
+   */
   setupTouchControls() {
     document.addEventListener("DOMContentLoaded", () => {
       let leftButton = document.querySelector(".left");

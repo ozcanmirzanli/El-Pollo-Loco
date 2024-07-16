@@ -1,3 +1,7 @@
+/**
+ * Represents the main character in the game.
+ * Extends MovableObject, inheriting properties and methods related to movement and collision.
+ */
 class Character extends MovableObject {
   width = 120;
   height = 250;
@@ -10,13 +14,13 @@ class Character extends MovableObject {
 
   offset = {
     top: 120,
-    bottom: 10,
+    bottom: 20,
     left: 30,
     right: 30,
   };
 
   lastJumpTime = 0;
-  jumpCooldown = 500;
+  jumpCooldown = 800;
   idleTime = 0;
   isSleeping = false;
 
@@ -82,6 +86,10 @@ class Character extends MovableObject {
 
   world;
 
+  /**
+   * Constructs a new Character instance.
+   * Initializes default images, applies gravity, sets up animation, keyboard handling, and idle time tracking.
+   */
   constructor() {
     super();
     this.loadDefaultImages();
@@ -90,8 +98,12 @@ class Character extends MovableObject {
     this.keyboardInterval();
     this.trackIdleTime();
     this.keyboard = new Keyboard();
+    this.endBoss = new Endboss();
   }
 
+  /**
+   * Loads default images for walking, jumping, hurt, dead, and sleeping animations.
+   */
   loadDefaultImages() {
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -101,10 +113,17 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SLEEPING);
   }
 
+  /**
+   * Checks if the character had the first contact with the end boss.
+   * @returns {boolean} True if the character had first contact with the end boss, false otherwise.
+   */
   hadFirstContact() {
     return this.world.endBoss.hadFirstContact;
   }
 
+  /**
+   * Animates the character based on its state (walking, jumping, idle, hurt, dead).
+   */
   animate() {
     setInterval(() => {
       if (this.isDead()) {
@@ -119,6 +138,9 @@ class Character extends MovableObject {
     }, 50);
   }
 
+  /**
+   * Determines and plays either walking or idle animation based on keyboard input.
+   */
   handleIdleOrWalkingAnimation() {
     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.playAnimation(this.IMAGES_WALKING);
@@ -127,12 +149,18 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Plays idle animation when the character is not moving.
+   */
   handleIdleAnimation() {
     if (this.idleTime < 2) {
       this.loadImage(this.IMAGES_WALKING[0]);
     }
   }
 
+  /**
+   * Sets up keyboard input handling at regular intervals.
+   */
   keyboardInterval() {
     setInterval(() => {
       this.handleMovement();
@@ -140,6 +168,9 @@ class Character extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Handles movement based on keyboard input.
+   */
   handleMovement() {
     this.world.audioElements.walking_sound.pause();
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -153,6 +184,10 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Moves the character horizontally.
+   * @param {boolean} left - Whether to move left (true) or right (false).
+   */
   moveHorizontally(left) {
     if (left) {
       this.moveLeft();
@@ -166,6 +201,9 @@ class Character extends MovableObject {
     this.isSleeping = false;
   }
 
+  /**
+   * Initiates a jump for the character.
+   */
   jumpFunc() {
     this.jump(30);
     this.world.audioElements.jumping_sound.play();
@@ -174,17 +212,27 @@ class Character extends MovableObject {
     this.isSleeping = false;
   }
 
+  /**
+   * Plays the animation sequence for the character's death.
+   */
   deadAnimation() {
     this.playAnimation(this.IMAGES_DEAD);
     this.world.audioElements.dead_sound.play();
   }
 
+  /**
+   * Plays the animation sequence for the character being hurt by an enemy.
+   */
   hurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
     this.world.audioElements.hurt_sound.play();
     this.world.statusBar.setPercentage(this.energy);
   }
 
+  /**
+   * Checks if the character is hurt by any enemy and triggers the appropriate actions.
+   * @returns {boolean} True if the character is hurt by any enemy, false otherwise.
+   */
   isHurtByAnyEnemy() {
     const hurtByEnemy = this.world.level.enemies.some(
       (enemy) => this.isColliding(enemy) && !enemy.isEnemyDead
@@ -195,6 +243,9 @@ class Character extends MovableObject {
     return hurtByEnemy;
   }
 
+  /**
+   * Tracks idle time and plays sleeping animation if the character remains idle for too long.
+   */
   trackIdleTime() {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
@@ -207,11 +258,14 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Plays the sleeping animation for the character.
+   */
   // prettier-ignore
   playSleepingAnimation() {
     let currentFrame = 0;
     const sleepInterval = setInterval(() => {
-      if (!this.isSleeping || this.isDead() || this.isHurtByAnyEnemy() || this.world.isBossDead()
+      if (!this.isSleeping || this.isDead() || this.isHurtByAnyEnemy() || this.endBoss.isBossDead()
       ) {
         clearInterval(sleepInterval);
         return;

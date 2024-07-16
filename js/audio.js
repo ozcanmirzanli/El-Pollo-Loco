@@ -12,6 +12,7 @@ const audioElements = {
   endboss_jump: new Audio("audio/endboss_jump.mp3"),
   endboss_angry: new Audio("audio/endboss_angry.mp3"),
   endboss_dead: new Audio("audio/endboss_dead.mp3"),
+  throwing_sound: new Audio("audio/throw.mp3"),
 };
 
 // Set muted property to true for each audio element

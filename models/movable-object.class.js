@@ -14,6 +14,10 @@ class MovableObject extends DrawableObject {
     right: 0,
   };
 
+  /**
+   * Applies gravity to the movable object.
+   * The object falls if it's above the ground or has a positive vertical speed.
+   */
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -23,6 +27,11 @@ class MovableObject extends DrawableObject {
     }, 1000 / 40);
   }
 
+  /**
+   * Checks if the object is above the ground level.
+   * Throwable objects always fall, while others check their y position.
+   * @returns {boolean} True if above the ground, false otherwise.
+   */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       // ThrowableObject should always fall
@@ -32,6 +41,11 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the current object is colliding with another movable object.
+   * @param {MovableObject} mo - The other movable object to check collision with.
+   * @returns {boolean} True if colliding, false otherwise.
+   */
   // character.isColliding(chicken);
   isColliding(mo) {
     return (
@@ -42,10 +56,20 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Checks if the current object is horizontally colliding with another movable object.
+   * @param {MovableObject} mo - The other movable object to check horizontal collision with.
+   * @returns {boolean} True if horizontally colliding, false otherwise.
+   */
   isCollidingHorizontal(mo) {
     return this.x + this.width > mo.x && this.x < mo.x + mo.width;
   }
 
+  /**
+   * Checks if the current object has jumped on top of an enemy.
+   * @param {MovableObject} enemy - The enemy object to check.
+   * @returns {boolean} True if jumped on top of the enemy, false otherwise.
+   */
   isJumpedOn(enemy) {
     return (
       this.isCollidingHorizontal(enemy) &&
@@ -55,6 +79,9 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Reduces the energy (health) of the object when hit.
+   */
   hit() {
     this.energy -= 5;
     if (this.energy < 0) {
@@ -64,16 +91,28 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the object is currently hurt based on the time elapsed since last hit.
+   * @returns {boolean} True if currently hurt, false otherwise.
+   */
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit; // Difference in ms
     timepassed = timepassed / 800; // difference in s
     return timepassed < 1;
   }
 
+  /**
+   * Checks if the object is dead (energy is zero).
+   * @returns {boolean} True if dead, false otherwise.
+   */
   isDead() {
     return this.energy == 0;
   }
 
+  /**
+   * Plays animation by cycling through images.
+   * @param {Array<string>} images - Array of image paths for animation.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -81,18 +120,30 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * Moves the object to the right based on its speed.
+   */
   moveRight() {
     this.x += this.speed;
   }
 
+  /**
+   * Moves the object to the left based on its speed.
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * Initiates a jump with a specified jump height.
+   * @param {number} jumpHeight - The height of the jump.
+   */
   jump(jumpHeight) {
     const currentTime = new Date().getTime();
     if (currentTime - this.lastJumpTime > this.jumpCooldown) {
-      this.speedY = jumpHeight;
+      // Get current timestamp
+      // Check if jump cooldown has passed
+      this.speedY = jumpHeight; // Set vertical speed for jump
       this.lastJumpTime = currentTime; // Update last jump time
     }
   }

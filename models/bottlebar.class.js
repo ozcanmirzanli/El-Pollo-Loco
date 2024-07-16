@@ -1,4 +1,12 @@
+/**
+ * Represents a status bar for bottles in the game.
+ * Extends MovableObject, inheriting properties and methods related to movement and collision.
+ */
 class Bottlebar extends MovableObject {
+  /**
+   * Array of image paths representing different percentage levels of bottles.
+   * @type {string[]}
+   */
   IMAGES_BOTTLES = [
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/0.png",
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/20.png",
@@ -8,6 +16,10 @@ class Bottlebar extends MovableObject {
     "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png",
   ];
 
+  /**
+   * Constructs a new Bottlebar with the given initial number of bottles.
+   * @param {number} [initialBottles=0] - The initial number of bottles represented by the bar.
+   */
   constructor(initialBottles = 0) {
     super();
     this.bottles = initialBottles;
@@ -20,12 +32,20 @@ class Bottlebar extends MovableObject {
     this.height = 50;
   }
 
+  /**
+   * Sets the current percentage of bottles and updates the displayed image accordingly.
+   * @param {number} bottles - The current number of bottles to represent.
+   */
   setPercentage(bottles) {
     this.bottles = bottles;
     let path = this.IMAGES_BOTTLES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Resolves the index of the image in IMAGES_BOTTLES based on the current percentage of bottles.
+   * @returns {number} The index of the image in IMAGES_BOTTLES.
+   */
   resolveImageIndex() {
     if (this.bottles >= 100) {
       return 5;

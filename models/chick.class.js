@@ -1,14 +1,19 @@
+/**
+ * Represents a chick enemy in the game.
+ * Extends MovableObject, inheriting properties and methods related to movement and collision.
+ */
+
 class Chick extends MovableObject {
   width = 25;
   height = 25;
-  y = 390;
+  y = 400;
   isEnemyDead = false;
 
   offset = {
     top: 10,
     bottom: 10,
-    left: 20,
-    right: 20,
+    left: 10,
+    right: 10,
   };
 
   IMAGES_WALKING = [
@@ -19,6 +24,10 @@ class Chick extends MovableObject {
 
   IMAGE_DEAD = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
 
+  /**
+   * Constructs a new Chick instance.
+   * Initializes default image for walking, sets random position and speed, and starts animation.
+   */
   constructor() {
     super();
     this.loadImage(this.IMAGES_WALKING[0]);
@@ -30,6 +39,9 @@ class Chick extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts animation loops for walking and handling death state of the chick.
+   */
   animate() {
     setInterval(() => {
       if (!this.isEnemyDead) {

@@ -1,3 +1,6 @@
+/**
+ * Represents the game world where characters, enemies, and objects interact.
+ */
 class World {
   character = new Character();
   endBoss = new Endboss();
@@ -20,6 +23,11 @@ class World {
 
   isGameOver = false;
 
+  /**
+   * Constructs a new World instance.
+   * @param {HTMLCanvasElement} canvas - The canvas element for rendering.
+   * @param {Keyboard} keyboard - The keyboard input manager.
+   */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -31,14 +39,19 @@ class World {
     this.setWorld();
     this.run();
     this.throwBottle();
-    this.checkBottlesPosition();
   }
 
+  /**
+   * Sets the character and end boss references for the world.
+   */
   setWorld() {
     this.character.world = this;
     this.endBoss.world = this;
   }
 
+  /**
+   * Starts the game loop.
+   */
   run() {
     setInterval(() => {
       this.checkIsJumpedOn();
@@ -51,12 +64,18 @@ class World {
     }, 15);
   }
 
+  /**
+   * Initiates throwing a bottle by the character.
+   */
   throwBottle() {
     setInterval(() => {
       this.checkThrowObjects();
-    }, 550);
+    }, 500);
   }
 
+  /**
+   * Checks if the character can throw a bottle and initiates the action.
+   */
   checkThrowObjects() {
     if (this.keyboard.D && this.canThrowBottle()) {
       let bottle = new ThrowableObject(
@@ -71,18 +90,17 @@ class World {
     }
   }
 
+  /**
+   * Checks if the character has enough salsa bottles to throw.
+   * @returns {boolean} - True if the character can throw a bottle, otherwise false.
+   */
   canThrowBottle() {
     return this.character.salsaBottle >= 10;
   }
 
-  checkBottlesPosition() {
-    setInterval(() => {
-      this.throwableObjects = this.throwableObjects.filter(
-        (bottle) => bottle.y < 370
-      );
-    }, 1000);
-  }
-
+  /**
+   * Checks if any thrown bottle collides with an enemy and performs actions accordingly.
+   */
   // prettier-ignore
   bottleHitEnemy() {
     this.throwableObjects.forEach((bottle) => {
@@ -95,6 +113,10 @@ class World {
     });
   }
 
+  /**
+   * Checks if any thrown bottle collides with the end boss and performs actions accordingly.
+   * @returns {boolean} - True if a bottle hit the end boss, otherwise false.
+   */
   bottleHitEndBoss() {
     let hit = false;
     this.throwableObjects.forEach((bottle) => {
@@ -108,16 +130,10 @@ class World {
     return hit;
   }
 
-  isBossDead() {
-    let isBossDead = false;
-
-    if (this.endBoss.energy <= 0) {
-      this.endBoss.energy = 0;
-      isBossDead = true;
-    }
-    return isBossDead;
-  }
-
+  /**
+   * Removes a thrown bottle from the world.
+   * @param {ThrowableObject} bottle - The bottle object to be removed.
+   */
   removeBottle(bottle) {
     const index = this.throwableObjects.indexOf(bottle);
     if (index > -1) {
@@ -125,6 +141,9 @@ class World {
     }
   }
 
+  /**
+   * Checks collisions between the character and enemies, and performs actions accordingly.
+   */
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
@@ -134,9 +153,12 @@ class World {
     });
   }
 
+  /**
+   * Checks if the character has jumped on an enemy and performs actions accordingly.
+   */
   // prettier-ignore
   checkIsJumpedOn() {
-    this.level.enemies.forEach((enemy) => {
+    for (let enemy of this.level.enemies) {
       if (
         this.character.isJumpedOn(enemy) &&
         !enemy.isEnemyDead &&
@@ -144,10 +166,15 @@ class World {
       ) {
         this.killedEnemy(enemy);
         this.character.jump(5); // Example: Make the character bounce back after jump
+        break; // Exit the loop after killing one enemy
       }
-    });
+    }
   }
 
+  /**
+   * Marks an enemy as killed and removes it from the level after a delay.
+   * @param {MovableObject} enemy - The enemy object to be removed.
+   */
   killedEnemy(enemy) {
     if (!enemy.isEnemyDead && !(enemy instanceof Endboss)) {
       enemy.isEnemyDead = true;
@@ -165,14 +192,26 @@ class World {
     }
   }
 
+  /**
+   * Collects coins from the level and updates the character's coin count and UI bar.
+   */
   collectCoins() {
     this.collectItems("coins", 15, this.coinsBar);
   }
 
+  /**
+   * Collects salsa bottles from the level and updates the character's salsa bottle count and UI bar.
+   */
   collectSalsaBottles() {
     this.collectItems("salsaBottle", 15, this.bottleBar);
   }
 
+  /**
+   * Collects items (coins or salsa bottles) from the level and updates the character's counts and UI bar.
+   * @param {string} itemType - The type of item to collect ("coins" or "salsaBottle").
+   * @param {number} increment - The amount to increment the item count.
+   * @param {object} bar - The UI bar to update.
+   */
   collectItems(itemType, increment, bar) {
     if (this.isMaxValueReached(itemType, bar)) {
       return;
@@ -180,6 +219,12 @@ class World {
     this.level[itemType] = this.filterAndCollectItems(itemType, increment, bar);
   }
 
+  /**
+   * Checks if the maximum value for an item (coins or salsa bottles) has been reached.
+   * @param {string} itemType - The type of item to check ("coins" or "salsaBottle").
+   * @param {object} bar - The UI bar to check.
+   * @returns {boolean} - True if the maximum value is reached, otherwise false.
+   */
   isMaxValueReached(itemType, bar) {
     return (
       bar[itemType] >= 100 ||
@@ -187,6 +232,13 @@ class World {
     );
   }
 
+  /**
+   * Filters and collects items (coins or salsa bottles) from the level.
+   * @param {string} itemType - The type of item to collect ("coins" or "salsaBottle").
+   * @param {number} increment - The amount to increment the item count.
+   * @param {object} bar - The UI bar to update.
+   * @returns {Array<MovableObject>} - The filtered array of items after collection.
+   */
   filterAndCollectItems(itemType, increment, bar) {
     return this.level[itemType].filter((mo) => {
       if (this.character.isColliding(mo)) {
@@ -199,6 +251,11 @@ class World {
     });
   }
 
+  /**
+   * Increments the character's count of coins or salsa bottles.
+   * @param {string} itemType - The type of item to increment ("coins" or "salsaBottle").
+   * @param {number} increment - The amount to increment.
+   */
   incrementItem(itemType, increment) {
     if (itemType === "salsaBottle") {
       this.character.salsaBottle += increment;
@@ -207,6 +264,11 @@ class World {
     }
   }
 
+  /**
+   * Updates the UI bar for coins or salsa bottles.
+   * @param {object} bar - The UI bar to update.
+   * @param {string} itemType - The type of item to update ("coins" or "salsaBottle").
+   */
   updateBar(bar, itemType) {
     if (itemType === "salsaBottle") {
       bar.setPercentage(this.character.salsaBottle);
@@ -215,6 +277,10 @@ class World {
     }
   }
 
+  /**
+   * Plays a sound effect based on the collected item type (coins or salsa bottles).
+   * @param {string} itemType - The type of item collected ("coins" or "salsaBottle").
+   */
   playItemSound(itemType) {
     if (itemType === "coins") {
       this.audioElements.coin_sound.play();
@@ -223,6 +289,9 @@ class World {
     }
   }
 
+  /**
+   * Draws all game elements on the canvas.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -259,12 +328,20 @@ class World {
     });
   }
 
+  /**
+   * Adds an array of objects to the rendering map.
+   * @param {Array<MovableObject>} objects - The array of objects to add.
+   */
   addObjectsToMap(objects) {
     objects.forEach((o) => {
       this.addToMap(o);
     });
   }
 
+  /**
+   * Adds an object to the rendering map, handling flipping if necessary.
+   * @param {MovableObject} mo - The object to add to the map.
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -276,25 +353,37 @@ class World {
       this.flipImageBack(mo);
     }
   }
-
+  /**
+   * Flips an image horizontally for rendering.
+   * @param {MovableObject} mo - The object whose image to flip.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
   }
-
+  /**
+   * Restores the original orientation of an image after flipping.
+   * @param {MovableObject} mo - The object whose image to restore.
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
 
   checkGameOver() {
-    if (this.character.isDead() || (this.isBossDead() && !this.isGameOver)) {
+    if (
+      this.character.isDead() ||
+      (this.endBoss.isBossDead() && !this.isGameOver)
+    ) {
       this.gameOver();
     }
   }
 
+  /**
+   * Checks if the game is over due to character death or boss defeat.
+   */
   gameOver() {
     if (this.isGameOver) {
       return;
@@ -308,24 +397,30 @@ class World {
     void finishedGameOverlay.offsetWidth;
     finishedGameOverlay.classList.add("visible");
     setTimeout(() => {
-      this.clearAllIntervals();
+      clearAllIntervals();
     }, 2000);
     this.finishedGameTextAndSoundChange();
   }
 
+  /**
+   * Changes the text and plays the sound effect based on game outcome (win/lose).
+   */
   finishedGameTextAndSoundChange() {
     let finishedGameText = document.querySelector(".finished-game-text");
 
     if (this.character.isDead()) {
       finishedGameText.innerHTML = "GAME OVER!";
       this.audioElements.game_over_sound.play();
-    } else if (this.isBossDead()) {
+    } else if (this.endBoss.isBossDead()) {
       finishedGameText.innerHTML = "YOU WON!";
       this.audioElements.won_sound.play();
     }
     this.pauseAudio();
   }
 
+  /**
+   * Controls the boss fight sound effects during gameplay.
+   */
   bossFightSound() {
     if (this.character.hadFirstContact() && !this.isGameOver) {
       if (this.audioElements.boss_fight.paused) {
@@ -338,16 +433,12 @@ class World {
     }
   }
 
+  /**
+   * Pauses music and the boss fight Audio.
+   */
   pauseAudio() {
     music.pause();
     this.audioElements.boss_fight.pause();
     this.audioElements.boss_fight.currentTime = 0;
-  }
-
-  clearAllIntervals() {
-    let highestIntervalId = setInterval(() => {}, 1000);
-    for (let i = 0; i <= highestIntervalId; i++) {
-      clearInterval(i);
-    }
   }
 }

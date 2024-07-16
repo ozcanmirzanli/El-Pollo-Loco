@@ -1,5 +1,8 @@
+/**
+ * Represents a throwable object (such as a salsa bottle) that extends MovableObject.
+ * @extends MovableObject
+ */
 class ThrowableObject extends MovableObject {
-  throwing_sound = new Audio("audio/throw.mp3");
   hasSplashed = false;
 
   BOTTLE_ROTATION = [
@@ -18,6 +21,12 @@ class ThrowableObject extends MovableObject {
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
+  /**
+   * Constructs a new ThrowableObject.
+   * @param {number} x - The initial x-coordinate.
+   * @param {number} y - The initial y-coordinate.
+   * @param {object} world - The world object in which the throwable object exists.
+   */
   constructor(x, y, world) {
     super();
     this.loadImage("img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
@@ -31,16 +40,24 @@ class ThrowableObject extends MovableObject {
     this.speedY = 25;
     this.acceleration = 2;
     this.world = world;
+
+    this.checkBottlesPosition();
     this.throw();
     this.animate();
   }
 
+  /**
+   * Initiates the throw action.
+   */
   throw() {
-    this.throwing_sound.play();
+    this.world.audioElements.throwing_sound.play();
     this.applyGravity();
     this.hitBottleToFloor();
   }
 
+  /**
+   * Moves the bottle horizontally and detects collision with the floor.
+   */
   hitBottleToFloor() {
     this.throwInterval = setInterval(() => {
       // Check the direction and move the bottle accordingly
@@ -56,6 +73,9 @@ class ThrowableObject extends MovableObject {
     }, 20);
   }
 
+  /**
+   * Plays the splash animation and removes the bottle from the world.
+   */
   playSplashAnimationAndRemove() {
     if (!this.hasSplashed) {
       this.hasSplashed = true;
@@ -67,6 +87,17 @@ class ThrowableObject extends MovableObject {
         this.world.removeBottle(this); // Remove the bottle after the splash animation
       }, this.SPLASH_SALSA.length * 100); // Each frame takes 100ms
     }
+  }
+
+  /**
+   * Checks the position of thrown bottles and removes them if they fall below a certain y-coordinate.
+   */
+  checkBottlesPosition() {
+    setInterval(() => {
+      this.world.throwableObjects = this.world.throwableObjects.filter(
+        (bottle) => bottle.y < 370
+      );
+    }, 1000);
   }
 
   animate() {
