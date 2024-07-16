@@ -12,6 +12,8 @@ class Character extends MovableObject {
   totalBottles = 100;
   salsaBottle = 0;
 
+  lastThrowTime = 0;
+
   offset = {
     top: 120,
     bottom: 20,
@@ -258,6 +260,15 @@ class Character extends MovableObject {
     }, 1000);
   }
 
+  handleBottleThrow() {
+    this.idleTime = 0;
+    this.isSleeping = false;
+    this.setThrowingState(); // Call setThrowingState method when bottle is thrown
+
+    // Add the following line to clear the sleeping animation interval immediately
+    clearInterval(this.sleepInterval);
+  }
+
   /**
    * Plays the sleeping animation for the character.
    */
@@ -277,5 +288,14 @@ class Character extends MovableObject {
         currentFrame = 11; // Loop back to the 11th frame
       }
     }, 200);
+  }
+
+  /**
+   * Sets the character state to throwing.
+   */
+  setThrowingState() {
+    this.isThrowing = true;
+    this.isIdle = false;
+    this.isSleeping = false;
   }
 }

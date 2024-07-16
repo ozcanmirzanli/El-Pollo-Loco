@@ -76,34 +76,54 @@ class World {
   }
 
   /**
-   * Checks if the character can throw a bottle and initiates the action.
+   * Checks if the character can throw a bottle and initiates the throw if possible.
    */
   checkThrowObjects() {
     const now = new Date().getTime();
-    if (
-      this.keyboard.D &&
-      this.canThrowBottle() &&
-      now - this.lastThrowTime >= this.throwCooldown
-    ) {
-      let bottle = new ThrowableObject(
-        this.character.x + 50,
-        this.character.y + 120,
-        this
-      );
-      this.throwableObjects.push(bottle);
-      this.character.salsaBottle -= 10; // Decrement bottles by 10
-      this.bottleBar.setPercentage(this.character.salsaBottle); // Update bottle bar
-      this.audioElements.bottle_sound.play();
-      this.lastThrowTime = now; // Update the last throw time
+    if (this.isBottleThrowAllowed(now)) {
+      this.initiateBottleThrow(now);
     }
   }
 
   /**
-   * Checks if the character has enough salsa bottles to throw.
+   * Checks if the character is allowed to throw a bottle based on cooldown and bottle availability.
+   * @param {number} now - The current timestamp.
+   * @returns {boolean} - True if the bottle throw is allowed, otherwise false.
+   */
+  isBottleThrowAllowed(now) {
+    return (
+      this.keyboard.D &&
+      this.canThrowBottle() &&
+      now - this.lastThrowTime >= this.throwCooldown
+    );
+  }
+
+  /**
+   * Initiates the bottle throw by the character.
+   * @param {number} now - The current timestamp.
+   */
+  initiateBottleThrow(now) {
+    let bottle = new ThrowableObject(
+      this.character.x + 50,
+      this.character.y + 120,
+      this
+    );
+    this.throwableObjects.push(bottle);
+    this.character.salsaBottle -= 10; // Decrement bottles by 10
+    this.bottleBar.setPercentage(this.character.salsaBottle); // Update bottle bar
+    this.audioElements.bottle_sound.play();
+    this.lastThrowTime = now; // Update the last throw time
+
+    // Update the character state to ensure the correct animation is played
+    this.character.setThrowingState();
+  }
+
+  /**
+   * Determines if the character can throw a bottle based on the number of bottles available.
    * @returns {boolean} - True if the character can throw a bottle, otherwise false.
    */
   canThrowBottle() {
-    return this.character.salsaBottle >= 10;
+    return this.character.salsaBottle > 0;
   }
 
   /**
