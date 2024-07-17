@@ -57,23 +57,23 @@ class Keyboard extends MovableObject {
       let jumpButton = document.querySelector(".jump");
       let throwButton = document.querySelector(".throw");
 
-      const options = { passive: true };
-
       if (leftButton) {
         leftButton.addEventListener(
           "touchstart",
           (e) => {
+            e.preventDefault();
             this.LEFT = true;
           },
-          options
+          { passive: false }
         );
 
         leftButton.addEventListener(
           "touchend",
           (e) => {
+            e.preventDefault();
             this.LEFT = false;
           },
-          options
+          { passive: false }
         );
       }
 
@@ -81,17 +81,19 @@ class Keyboard extends MovableObject {
         rightButton.addEventListener(
           "touchstart",
           (e) => {
+            e.preventDefault();
             this.RIGHT = true;
           },
-          options
+          { passive: false }
         );
 
         rightButton.addEventListener(
           "touchend",
           (e) => {
+            e.preventDefault();
             this.RIGHT = false;
           },
-          options
+          { passive: false }
         );
       }
 
@@ -99,17 +101,19 @@ class Keyboard extends MovableObject {
         jumpButton.addEventListener(
           "touchstart",
           (e) => {
+            e.preventDefault();
             this.UP = true;
           },
-          options
+          { passive: false }
         );
 
         jumpButton.addEventListener(
           "touchend",
           (e) => {
+            e.preventDefault();
             this.UP = false;
           },
-          options
+          { passive: false }
         );
       }
 
@@ -117,17 +121,19 @@ class Keyboard extends MovableObject {
         throwButton.addEventListener(
           "touchstart",
           (e) => {
+            e.preventDefault();
             this.D = true;
           },
-          options
+          { passive: false }
         );
 
         throwButton.addEventListener(
           "touchend",
           (e) => {
+            e.preventDefault();
             this.D = false;
           },
-          options
+          { passive: false }
         );
       }
     });
