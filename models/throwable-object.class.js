@@ -59,13 +59,14 @@ class ThrowableObject extends MovableObject {
    * Moves the bottle horizontally and detects collision with the floor.
    */
   hitBottleToFloor() {
+    // Determine initial direction based on character's direction
+    const directionMultiplier = this.world.character.otherDirection ? -1 : 1;
+
     this.throwInterval = setInterval(() => {
-      // Check the direction and move the bottle accordingly
-      if (this.world.character.otherDirection) {
-        this.x -= 5; // Move left if character is facing left
-      } else {
-        this.x += 5; // Move right if character is facing right
-      }
+      // Move the bottle horizontally
+      this.x += directionMultiplier * 5;
+
+      // Check if the bottle has hit the floor
       if (this.y >= 380) {
         this.y = 380; // Ensure the object stays at y=380
         this.playSplashAnimationAndRemove();
