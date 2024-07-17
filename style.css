@@ -279,6 +279,25 @@ a {
   flex-direction: column;
 }
 
+.back-logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+.back-logo a {
+  border: none;
+}
+
+.impressum-title {
+  font-size: 65px;
+  letter-spacing: 8px;
+}
+
+.kontakt h2 {
+  margin-bottom: 10px;
+}
+
 @media only screen and (max-width: 1200px) {
   .game-controls {
     display: flex;
@@ -352,6 +371,51 @@ a {
 
   .right-controls {
     margin-left: 70%;
+  }
+
+  .impressum-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+  }
+
+  .impressum-title {
+    display: block;
+    margin-bottom: 0px;
+    font-size: 50px;
+  }
+
+  .impressum-container p {
+    font-size: 25px;
+  }
+
+  .kontakt {
+    margin-left: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .impressum-container {
+    height: 50%;
+  }
+
+  .impressum-container p {
+    font-size: 25px;
+  }
+
+  .impressum-title {
+    font-size: 50px;
+    margin-bottom: 32px;
+    display: block;
+  }
+}
+
+@media (max-width: 380px) {
+  .impressum-title {
+    margin-bottom: 25px;
+    margin-top: 15px;
   }
 }
 
