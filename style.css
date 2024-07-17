@@ -314,6 +314,7 @@ a {
   .right-controls {
     margin-left: 55%;
   }
+
   * {
     overflow: auto;
   }
@@ -349,8 +350,9 @@ a {
   .finished-game-overlay {
     width: 100vw;
     height: 100vh;
-    margin-top: 0;
+    margin: 0;
     border-radius: 0;
+    object-fit: fill;
   }
 
   .play-container {
@@ -393,6 +395,10 @@ a {
 
   .kontakt {
     margin-left: 50px;
+  }
+
+  .impressum {
+    display: none;
   }
 }
 
