@@ -97,6 +97,8 @@ class Endboss extends MovableObject {
 
     setInterval(() => {
       this.bossFightSound();
+      this.deadAnimation();
+      this.isBossDead();
     }, 15);
   }
 
