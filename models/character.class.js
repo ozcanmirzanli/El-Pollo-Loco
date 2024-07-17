@@ -251,13 +251,13 @@ class Character extends MovableObject {
   trackIdleTime() {
     setInterval(() => {
       if (!this.isSleeping && !this.isDead() && !this.isHurtByAnyEnemy()) {
-        this.idleTime += 1; // Increment idleTime in seconds
-        if (this.idleTime > 1) {
+        this.idleTime += 2; // Increment idleTime in seconds
+        if (this.idleTime >= 0) {
           this.isSleeping = true;
           this.playSleepingAnimation();
         }
       }
-    }, 1000);
+    }, 500);
   }
 
   handleBottleThrow() {
