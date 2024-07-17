@@ -80,6 +80,7 @@ class Endboss extends MovableObject {
     this.applyGravity();
 
     this.animate();
+    this.initAttackTimer();
   }
 
   /**
@@ -153,7 +154,6 @@ class Endboss extends MovableObject {
     if (world.bottleHitEndBoss()) {
       this.playAnimation(this.IMAGES_HURT);
       world.audioElements.endboss_angry.play();
-      setTimeout(() => this.attackAnimation(), 800);
     }
   }
 
@@ -166,6 +166,21 @@ class Endboss extends MovableObject {
       this.playAnimation(this.IMAGES_DEAD);
       world.audioElements.endboss_dead.play();
     }
+  }
+
+  /**
+   * Initializes the attack timer to trigger attack actions every 5 seconds.
+   */
+  initAttackTimer() {
+    setInterval(() => {
+      if (
+        this.hadFirstContact &&
+        this.alertAnimationPlayed &&
+        !this.isBossDead()
+      ) {
+        this.attackAnimation();
+      }
+    }, 5000); // Attack every 5 seconds
   }
 
   /**
@@ -182,18 +197,22 @@ class Endboss extends MovableObject {
         clearInterval(intervalId);
         this.performAttackActions();
       }
-    }, 150);
+    }, 60);
+  }
+
+  jumpBoss(jumpHeight) {
+    this.speedY = jumpHeight;
   }
 
   /**
    * Performs attack actions of the end boss.
-   * Initiates a jump action and plays jump sound effect after a delay.
+   * Initiates a jump action and plays jump sound effect.
    */
   performAttackActions() {
-    this.jump(15);
+    this.jumpBoss(30); // Adjust jump height as needed
     setTimeout(() => {
       world.audioElements.endboss_jump.play();
-    }, 500);
+    }, 550);
   }
 
   /**
