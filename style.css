@@ -227,7 +227,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
 }
 
 .music-btn-container,
@@ -336,7 +336,7 @@ a {
 
 @media only screen and (max-height: 480px) {
   .game-controls {
-    height: 370px;
+    height: 360px;
   }
 
   h1,
